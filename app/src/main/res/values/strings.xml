@@ -1,0 +1,44 @@
+<resources>
+    <string name="app_name">RewardX2019</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="splash_intro_text">Earn rewards and tokens from your favourite brand from your daily purchases</string>
+    <string name="termsServices">By registering you are\nagreeing\nto our <u>terms of services</u></string>
+    <string name="profile_total_rewards">Check to combine and\nadd to total rewards</string>
+    <string name="sign_up_now"><u>Sign up Now!</u></string>
+    <string name="err_msg_password_match"><u>Passwords do not match</u></string>
+    <string name="err_msg_username"><u>UserName can't be empty</u></string>
+    <string name="err_msg_emailId"><u>Email Id can't be empty</u></string>
+    <string name="err_msg_password_empty">Password cannot be empty</string>
+
+
+    <!--Google-->
+    <!--  Web client id-->
+    <string name="server_client_id">1008907055248-5pvuol9sff3ndl4938h8cmgs30cqs1fe.apps.googleusercontent.com</string>
+    <string name="cash_transfer">How much cash would you like to transfer?</string>
+
+
+    <string-array name="months_inNumber">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
+</resources>

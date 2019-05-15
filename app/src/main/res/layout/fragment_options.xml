@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragments.FilterMenuOptionsFragment">
+
+<!--    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Options are below"
+        android:textSize="18sp"
+        android:padding="10sp"
+        android:textColor="@color/colorBlack"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1sp"
+        android:background="@color/colorLightBlue"/>-->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Breakfast"
+        android:textSize="16sp"
+        android:padding="10sp"
+        android:textColor="@color/colorBlack"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1sp"
+        android:background="@color/colorLightBlue"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cafe, Desserts and Bakeries"
+        android:textSize="16sp"
+        android:padding="10sp"
+        android:textColor="@color/colorBlack"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1sp"
+        android:background="@color/colorLightBlue"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Clubs &amp; Bars"
+        android:textSize="16sp"
+        android:padding="10sp"
+        android:textColor="@color/colorBlack"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1sp"
+        android:background="@color/colorLightBlue"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Dinner"
+        android:textSize="16sp"
+        android:padding="10sp"
+        android:textColor="@color/colorBlack"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1sp"
+        android:background="@color/colorLightBlue"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fast Food"
+        android:textSize="16sp"
+        android:padding="10sp"
+        android:textColor="@color/colorBlack"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1sp"
+        android:background="@color/colorLightBlue"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lunch"
+        android:textSize="16sp"
+        android:padding="10sp"
+        android:textColor="@color/colorBlack"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1sp"
+        android:background="@color/colorLightBlue"/>
+
+
+
+</LinearLayout>

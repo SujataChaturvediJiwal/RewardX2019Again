@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+    <item
+        android:id="@+id/nav_dashboard"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:title="Dashboard" />
+    <item
+        android:id="@+id/nav_activities"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:title="Activities" />
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_launcher_foreground"
+            android:title="Profile" />
+    <item
+        android:id="@+id/nav_coupons"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:title="Coupons" />
+    <item
+        android:id="@+id/nav_compaigns"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:title="Compaigns" />
+    <item
+        android:id="@+id/nav_accounts"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:title="Account " />
+    <item
+        android:id="@+id/nav_billing"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:title="Billing" />
+    <item
+        android:id="@+id/nav_support"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:title="Support" />
+
+    </group>
+</menu>

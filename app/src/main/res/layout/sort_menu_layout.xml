@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@color/colorBlack"
+        android:gravity="center"
+        android:layout_marginTop="5sp"
+        android:text="Sort by"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4sp"
+        android:layout_marginTop="5sp"
+        android:background="@color/colorLightGrey"
+        />
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Popular"
+    android:padding="5sp"
+    android:textColor="@color/colorBlack"
+    android:textSize="16sp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2sp"
+        android:background="@color/colorLightGrey"
+        android:layout_marginTop="5sp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Near me"
+        android:padding="5sp"
+        android:textColor="@color/colorBlack"
+        android:textSize="16sp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2sp"
+        android:background="@color/colorLightGrey"
+        android:layout_marginTop="5sp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Rating"
+        android:padding="5sp"
+        android:textColor="@color/colorBlack"
+        android:textSize="16sp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2sp"
+        android:background="@color/colorLightGrey"
+        android:layout_marginTop="5sp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Price Low to High"
+        android:padding="5sp"
+        android:textColor="@color/colorBlack"
+        android:textSize="16sp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2sp"
+        android:background="@color/colorLightGrey"
+        android:layout_marginTop="5sp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Price High to Low"
+        android:padding="5sp"
+        android:textColor="@color/colorBlack"
+        android:textSize="16sp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5sp"
+        android:background="@color/colorLightGrey"
+        android:layout_marginTop="5sp"
+        />
+    <ImageView
+        android:id="@+id/close_sort_menu_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5sp"
+        android:src="@drawable/ic_clear_black_24dp"/>
+</LinearLayout>
