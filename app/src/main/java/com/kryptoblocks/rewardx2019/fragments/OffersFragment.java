@@ -1,9 +1,12 @@
 package com.kryptoblocks.rewardx2019.fragments;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -33,7 +36,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
-import static com.kryptoblocks.rewardx2019.SocialLoginActivity.user_uuid;
+//import static com.kryptoblocks.rewardx2019.SocialLoginActivity.user_uuid;
 import static com.kryptoblocks.rewardx2019.adapter.RegisteredVendorRewardsAdapter.vendor_reward_uuid;
 import static com.kryptoblocks.rewardx2019.fragments.DiscoverFragment.vendor_uuid;
 
@@ -52,6 +55,10 @@ public class OffersFragment extends Fragment {
     OffersAdapter offersAdapter;
     ApiInterface apiInterface;
     TextView empty_offers_textView;
+
+    public static final String mypreferenceLogin = "mypref";
+    SharedPreferences sharedPreferencesOffersFrag;
+    String user_id_offers_frag;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,6 +80,11 @@ public class OffersFragment extends Fragment {
         recyle_redeem.setItemAnimator(new DefaultItemAnimator());
         recyle_redeem.setAdapter(offersAdapter);*/
 
+        sharedPreferencesOffersFrag = this.getActivity().getSharedPreferences(mypreferenceLogin, Context.MODE_PRIVATE);
+        //retrieving data of shared preferences
+        user_id_offers_frag = sharedPreferencesOffersFrag.getString("user_unique_id","hi");
+
+        //Toast.makeText(getContext(), "User id:" + user_id_offers_frag , Toast.LENGTH_SHORT).show();
         displayAllVendorOffers();
 
        // redeemSet();
@@ -123,7 +135,7 @@ public class OffersFragment extends Fragment {
         // apiInterface = ApiClient.getRetrofit().create(ApiInterface.class);
 
 
-        Call<GetAllVendorOffers> call1 = apiInterface.getAllVendorsOffers(user_uuid);
+        Call<GetAllVendorOffers> call1 = apiInterface.getAllVendorsOffers(user_id_offers_frag);
 
         System.out.println("callll====="+call1);
 
@@ -147,7 +159,7 @@ public class OffersFragment extends Fragment {
                     offersAdapter = new OffersAdapter(getContext(), response.body().getData());
                     RecyclerView.LayoutManager subLayoutManager =
                             new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-
+                    recyle_redeem.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
                     recyle_redeem.setLayoutManager(subLayoutManager);
                     recyle_redeem.setLayoutManager(subLayoutManager);
                     // home_prod_recycler.addItemDecoration(new Home_Product_Details_Fragment().GridSpacingItemDecoration(2, dpToPx(10), true));
@@ -168,7 +180,7 @@ public class OffersFragment extends Fragment {
                 else
                 {
                     Log.i(TAG, "post not submitted to API." + response);
-                    Toast.makeText(getContext(), "Unsuccess register+++++++++", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getContext(), "Unsuccess register+++++++++", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -177,7 +189,7 @@ public class OffersFragment extends Fragment {
             @Override
             public void onFailure(Call<GetAllVendorOffers> call, Throwable t) {
                 Log.e(TAG, "Unable to submit post to register API.");
-                Toast.makeText(getContext(), "Failed+++++++++", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), "Failed+++++++++", Toast.LENGTH_LONG).show();
                 t.printStackTrace();
             }
         });

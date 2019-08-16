@@ -3,40 +3,55 @@ package com.kryptoblocks.rewardx2019.pojo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class GetRecentActivitiesData {
+
     @SerializedName("_id")
     @Expose
     private String id;
-    @SerializedName("__v")
-    @Expose
-    private Integer v;
-    @SerializedName("order_id")
-    @Expose
-    private String orderId;
-    @SerializedName("order_date")
-    @Expose
-    private String orderDate;
-    @SerializedName("user_uuid")
-    @Expose
-    private String userUuid;
-    @SerializedName("login_name")
-    @Expose
-    private String loginName;
-    @SerializedName("redeem_points")
-    @Expose
-    private String redeemPoints;
-    @SerializedName("vendor_uuid")
-    @Expose
-    private String vendorUuid;
     @SerializedName("redeem_date_time")
     @Expose
     private String redeemDateTime;
+    @SerializedName("owner_uuid")
+    @Expose
+    private String ownerUuid;
+    @SerializedName("membership_uuid")
+    @Expose
+    private String membershipUuid;
+    @SerializedName("redeem_points")
+    @Expose
+    private String redeemPoints;
+    @SerializedName("__v")
+    @Expose
+    private Integer v;
+    @SerializedName("is_processable")
+    @Expose
+    private Boolean isProcessable;
+    @SerializedName("order_id")
+    @Expose
+    private String orderId;
     @SerializedName("remarks")
     @Expose
     private String remarks;
     @SerializedName("uuid")
     @Expose
     private String uuid;
+    @SerializedName("reward_points")
+    @Expose
+    private Integer rewardPoints;
+    @SerializedName("date_time_allocated")
+    @Expose
+    private String dateTimeAllocated;
+    @SerializedName("vendor_uuid")
+    @Expose
+    private String vendorUuid;
+    @SerializedName("incentive_uuid")
+    @Expose
+    private String incentiveUuid;
+    @SerializedName("incentive_name")
+    @Expose
+    private String incentiveName;
 
     public String getId() {
         return id;
@@ -46,44 +61,28 @@ public class GetRecentActivitiesData {
         this.id = id;
     }
 
-    public Integer getV() {
-        return v;
+    public String getRedeemDateTime() {
+        return redeemDateTime;
     }
 
-    public void setV(Integer v) {
-        this.v = v;
+    public void setRedeemDateTime(String redeemDateTime) {
+        this.redeemDateTime = redeemDateTime;
     }
 
-    public String getOrderId() {
-        return orderId;
+    public String getOwnerUuid() {
+        return ownerUuid;
     }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
+    public void setOwnerUuid(String ownerUuid) {
+        this.ownerUuid = ownerUuid;
     }
 
-    public String getOrderDate() {
-        return orderDate;
+    public String getMembershipUuid() {
+        return membershipUuid;
     }
 
-    public void setOrderDate(String orderDate) {
-        this.orderDate = orderDate;
-    }
-
-    public String getUserUuid() {
-        return userUuid;
-    }
-
-    public void setUserUuid(String userUuid) {
-        this.userUuid = userUuid;
-    }
-
-    public String getLoginName() {
-        return loginName;
-    }
-
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
+    public void setMembershipUuid(String membershipUuid) {
+        this.membershipUuid = membershipUuid;
     }
 
     public String getRedeemPoints() {
@@ -94,20 +93,28 @@ public class GetRecentActivitiesData {
         this.redeemPoints = redeemPoints;
     }
 
-    public String getVendorUuid() {
-        return vendorUuid;
+    public Integer getV() {
+        return v;
     }
 
-    public void setVendorUuid(String vendorUuid) {
-        this.vendorUuid = vendorUuid;
+    public void setV(Integer v) {
+        this.v = v;
     }
 
-    public String getRedeemDateTime() {
-        return redeemDateTime;
+    public Boolean getIsProcessable() {
+        return isProcessable;
     }
 
-    public void setRedeemDateTime(String redeemDateTime) {
-        this.redeemDateTime = redeemDateTime;
+    public void setIsProcessable(Boolean isProcessable) {
+        this.isProcessable = isProcessable;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
     public String getRemarks() {
@@ -124,6 +131,46 @@ public class GetRecentActivitiesData {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public Integer getRewardPoints() {
+        return rewardPoints;
+    }
+
+    public void setRewardPoints(Integer rewardPoints) {
+        this.rewardPoints = rewardPoints;
+    }
+
+    public String getDateTimeAllocated() {
+        return dateTimeAllocated;
+    }
+
+    public void setDateTimeAllocated(String dateTimeAllocated) {
+        this.dateTimeAllocated = dateTimeAllocated;
+    }
+
+    public String getVendorUuid() {
+        return vendorUuid;
+    }
+
+    public void setVendorUuid(String vendorUuid) {
+        this.vendorUuid = vendorUuid;
+    }
+
+    public String getIncentiveUuid() {
+        return incentiveUuid;
+    }
+
+    public void setIncentiveUuid(String incentiveUuid) {
+        this.incentiveUuid = incentiveUuid;
+    }
+
+    public String getIncentiveName() {
+        return incentiveName;
+    }
+
+    public void setIncentiveName(String incentiveName) {
+        this.incentiveName = incentiveName;
     }
 
 }

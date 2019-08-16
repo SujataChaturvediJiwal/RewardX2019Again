@@ -10,8 +10,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/profile_blue_background">
+        android:orientation="horizontal"
+        android:background="@drawable/blue">
+        <ImageView
+            android:id="@+id/redeem_desc_back_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_back_black_24dp"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,16 +29,20 @@
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/barcode_redeem_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/bar_code"
+        android:layout_marginTop="10sp"
         android:adjustViewBounds="true"/>
     <TextView
+        android:id="@+id/user_id_redeem_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="12345678890"
         android:textSize="18sp"
         android:textColor="@color/colorBlack"
+        android:layout_marginTop="5sp"
         android:gravity="center"/>
 
 <ScrollView
@@ -54,6 +63,7 @@
         <LinearLayout
             android:layout_width="0sp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="2">
     <ImageView
         android:id="@+id/redeem_details_image"
@@ -75,18 +85,19 @@
         android:id="@+id/redeem_details_vendor_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10sp"
         android:text="Pantaloons"
-        android:textSize="18sp"
-        android:gravity="center" />
-    <TextView
+        android:textSize="20sp"
+        android:gravity="center"
+        android:layout_marginBottom="10sp"
+        android:textStyle="bold"/>
+   <!-- <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="summary for the product etc"
         android:textSize="18sp"
         android:gravity="center"
         android:textColor="@color/colorBlack"
-        android:layout_marginTop="10sp"/>
+        android:layout_marginTop="10sp"/>-->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -106,17 +117,17 @@
         android:textColor="@color/colorBlack"/>
     </LinearLayout>
     </LinearLayout>
-    <Button
+   <!-- <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Redeem"
         android:textSize="18sp"
         android:layout_marginTop="30sp"
         android:layout_marginBottom="10sp"
-        android:layout_margin="10sp"
         android:padding="10sp"
-        android:textColor="@color/colorWhite"
-        android:background="@color/colorBlue"/>
+        android:gravity="center"
+        android:textColor="@color/colorBlack"
+       />-->
     </LinearLayout>
 
 </ScrollView>

@@ -1,5 +1,6 @@
 package com.kryptoblocks.rewardx2019;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -7,11 +8,13 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kryptoblocks.rewardx2019.adapter.ParticularVendorRewardsAdapter;
 import com.kryptoblocks.rewardx2019.apiInterfaces.ApiInterface;
+import com.kryptoblocks.rewardx2019.fragments.RewardsProfileFragment;
 import com.kryptoblocks.rewardx2019.network.ApiClient;
 import com.kryptoblocks.rewardx2019.pojo.GetAllIncentives;
 import com.kryptoblocks.rewardx2019.pojo.GetAllIncentivesData;
@@ -40,6 +43,7 @@ public class AllVendorRewardsActivity extends AppCompatActivity {
     List<GetAllIncentives> getAllIncentives;
     ParticularVendorRewardsAdapter particularVendorRewardsAdapter;
     TextView empty_rewards, reward_merchant_name;
+    ImageView back_arow_registeredVendorRewards;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +52,18 @@ public class AllVendorRewardsActivity extends AppCompatActivity {
 
         recyclerView_display_all_rewards_ofVendor = findViewById(R.id.recyclerView_particular_vendor_reward);
         empty_rewards = findViewById(R.id.no_rewards_textView);
+        back_arow_registeredVendorRewards = findViewById(R.id.regsiteredVendorRewards_back_arrow);
         reward_merchant_name = findViewById(R.id.reward_merchant_name);
 
         reward_merchant_name.setText(vendorRewards_name);
+
+        back_arow_registeredVendorRewards.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*Intent i = new Intent(AllVendorRewardsActivity.this, ProfileActivity.class);
+                startActivity(i);*/
+            }
+        });
 
         displayRewardDetails();
     }
@@ -111,7 +124,7 @@ public class AllVendorRewardsActivity extends AppCompatActivity {
 
                             }
                             Log.i(TAG, "  success to API." + response);
-                            Toast.makeText(getApplicationContext(), "Success register+++++++++", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getApplicationContext(), "Success register+++++++++", Toast.LENGTH_LONG).show();
 
 
                         } catch (JSONException e) {
@@ -124,11 +137,11 @@ public class AllVendorRewardsActivity extends AppCompatActivity {
                 {
                     empty_rewards.setVisibility(View.VISIBLE);
                     Log.i(TAG, "Empty body." + response);
-                    Toast.makeText(getApplicationContext(), "Empty body+++++++++", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), "Empty body+++++++++", Toast.LENGTH_LONG).show();
                 }
               else  {
                     Log.i(TAG, "post not submitted to API." + response);
-                    Toast.makeText(getApplicationContext(), "Unsuccess register+++++++++", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), "Unsuccess register+++++++++", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -137,7 +150,7 @@ public class AllVendorRewardsActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<GetAllIncentives> call, Throwable t) {
                 Log.e(TAG, "Unable to submit post to register API.");
-                Toast.makeText(getApplicationContext(), "Failed+++++++++", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "Failed+++++++++", Toast.LENGTH_LONG).show();
                 t.printStackTrace();
             }
         });

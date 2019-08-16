@@ -13,12 +13,15 @@ public class GetAllUserRewardPointsData {
     @SerializedName("vendor_name")
     @Expose
     private String vendorName;
-    @SerializedName("total_points")
-    @Expose
-    private Integer totalPoints;
     @SerializedName("logo_link")
     @Expose
     private String logoLink;
+    @SerializedName("total_points")
+    @Expose
+    private Integer totalPoints;
+    @SerializedName("membership_uuid")
+    @Expose
+    private String membershipUuid;
 
     public String getUserUuid() {
         return userUuid;
@@ -44,6 +47,14 @@ public class GetAllUserRewardPointsData {
         this.vendorName = vendorName;
     }
 
+    public String getLogoLink() {
+        return logoLink;
+    }
+
+    public void setLogoLink(String logoLink) {
+        this.logoLink = logoLink;
+    }
+
     public Integer getTotalPoints() {
         return totalPoints;
     }
@@ -52,13 +63,14 @@ public class GetAllUserRewardPointsData {
         this.totalPoints = totalPoints;
     }
 
-    public String getLogoLink() {
-        return logoLink;
+    public String getMembershipUuid() {
+        return membershipUuid;
     }
 
-    public void setLogoLink(String logoLink) {
-        this.logoLink = logoLink;
+    public void setMembershipUuid(String membershipUuid) {
+        this.membershipUuid = membershipUuid;
     }
+
 
 
 }

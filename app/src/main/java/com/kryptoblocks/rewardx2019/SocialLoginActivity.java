@@ -1,6 +1,8 @@
 package com.kryptoblocks.rewardx2019;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -8,12 +10,15 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,8 +30,13 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.gson.Gson;
 import com.kryptoblocks.rewardx2019.apiInterfaces.ApiInterface;
 import com.kryptoblocks.rewardx2019.network.ApiClient;
+import com.kryptoblocks.rewardx2019.pojo.GeneralError;
+import com.kryptoblocks.rewardx2019.pojo.GenericErrorPojo;
+import com.kryptoblocks.rewardx2019.pojo.LoginCustomerData;
+import com.kryptoblocks.rewardx2019.pojo.LoginCustomerInput;
 import com.kryptoblocks.rewardx2019.pojo.LoginCustomerOutput;
 import com.kryptoblocks.rewardx2019.pojo.RegisterCustomerInput;
 import com.kryptoblocks.rewardx2019.pojo.RegisterCustomerOutput;
@@ -44,14 +54,22 @@ public class SocialLoginActivity extends AppCompatActivity implements View.OnCli
     ApiInterface apiInterface;
     TextView text_sign_up_now;
     TextInputLayout emailId_TextInputlayout, password_TextInputlayout;
+    RadioButton radio_email, radio_phoneNumber;
      EditText  emailId_editT,password_editT;
     Button gmail_button, login;
     private static final String TAG = SocialLoginActivity.class.getSimpleName();
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 007;
-     static   String id, pswd ;
-   public static  String  user_uuid;
+        String id, pswd ;
+   public  static String  user_uuid;
     public static String user_fullName;
+    public static final String mypreferenceLogin = "mypref";
+    SharedPreferences sharedPreferencesLogin;
+    String user_id, password;
+    public static String user_unigue_id;
+    String login_type;
+    RadioGroup radioGroup;
+    int flag = 0;
     //  CallbackManager callbackManager;
 
     @Override
@@ -69,18 +87,73 @@ protected void onCreate(Bundle savedInstanceState) {
         password_editT= findViewById(R.id.editText_password_login);
         login = findViewById(R.id.login_button);
 
+        radio_email = findViewById(R.id.radio_button_chooseEmail);
+        radio_phoneNumber = findViewById(R.id.radio_button_choosePhoneNumber);
+        radioGroup = findViewById(R.id.radioGroup_signIn);
+
+        radio_email.setChecked(true);
+        emailId_TextInputlayout.setHint("Email Id");
+        flag = 1;
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                if(checkedId == R.id.radio_button_choosePhoneNumber) {
+                    emailId_TextInputlayout.setHint("Phone Number");
+                    flag = 0;
+                    System.out.println("ph num:"+flag);
+                }
+                else if(checkedId == R.id.radio_button_chooseEmail)
+                {
+                    emailId_TextInputlayout.setHint("Email Id");
+                    flag = 1;
+                    System.out.println("email:"+flag);
+                }
+            }
+
+        });
+
+
         text_sign_up_now.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SharedPreferences.Editor editor = sharedPreferencesLogin.edit();
+                editor.remove("user_id");
+                editor.remove("user_pswd");
+                editor.remove("user_uuid");
+                editor.clear();
+                editor.commit();
                 Intent i = new Intent(getApplication(), SignUpActivity.class);
                 startActivity(i);
             }
         });
 
+        sharedPreferencesLogin = getSharedPreferences(mypreferenceLogin, Context.MODE_PRIVATE);
+        //retrieving data of shared preferences
+        user_id = sharedPreferencesLogin.getString("user_id","hi");
+        password = sharedPreferencesLogin.getString("user_pswd","bye");
+        //Toast.makeText(SocialLoginActivity.this, "User id:" + user_id + " User password:" + password, Toast.LENGTH_SHORT).show();
+
+
+        //checking whether user is logged in or not
+        if(sharedPreferencesLogin.getBoolean("logged",false)){
+           Intent i = new Intent(this, MainActivity.class);
+           startActivity(i);
+        }
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loginCustomer();
+                if(flag == 1) {
+                    System.out.println("login by email");
+                    login_type = "1";
+                    loginCustomerByEmail();
+                }
+                else if(flag == 0)
+                {
+                    System.out.println("login by ph num");
+                    login_type ="2";
+                    loginCustomerByEmail();
+                }
             }
         });
 
@@ -103,6 +176,13 @@ protected void onCreate(Bundle savedInstanceState) {
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
         ////////////////////////Gmail End////////////////////////
+
+
+
+
+        // getLocation();
+
+
     }
 
 
@@ -118,7 +198,7 @@ protected void onCreate(Bundle savedInstanceState) {
 
             Log.e(TAG, "display name: " + acct.getDisplayName());
 
-            Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
 
             String personName = acct.getDisplayName();
             //  String personPhotoUrl = acct.getPhotoUrl().toString();
@@ -160,8 +240,8 @@ protected void onCreate(Bundle savedInstanceState) {
             long statusCode = result.getStatus().getStatusCode();
             System.out.println("status code----------- " + statusCode);
 
-            Intent i = new Intent(getApplication(), ProfileActivity.class );
-            startActivity(i);
+           /* Intent i = new Intent(getApplication(), ProfileActivity.class );
+            startActivity(i);*/
         }
        /* //fb
             else  if (resultCode == RESULT_OK) {
@@ -238,7 +318,7 @@ protected void onCreate(Bundle savedInstanceState) {
 
     /////////////////////////////////////////GMAIL End////////////////////////////////////////////////////
 
-    public void loginCustomer() {
+    public void loginCustomerByEmail() {
 
 
         apiInterface =  ApiClient.getInstance().getClient().create(ApiInterface.class);
@@ -246,15 +326,30 @@ protected void onCreate(Bundle savedInstanceState) {
 
 
         //Call<LoginCustomerOutput> call1 =  apiInterface.customerLogin("abc","123");
-         id = emailId_editT.getText().toString();
-         pswd = password_editT.getText().toString();
+
+        LoginCustomerInput loginCustomerInput = new LoginCustomerInput();
+
+        loginCustomerInput.setLoginName(emailId_editT.getText().toString());
+        loginCustomerInput.setPassword(password_editT.getText().toString());
+        loginCustomerInput.setLoginMethod(login_type);
+
+      /*  id = emailId_editT.getText().toString();
+        pswd = password_editT.getText().toString();*/
+
+        //using sharedPreferences
+       /* SharedPreferences.Editor editor = sharedPreferencesLogin.edit();
+        editor.putString("user_id", id);
+        editor.putString("user_pswd", pswd);
+        editor.commit();
+
 
         System.out.println("Id======"+ id);
-        System.out.println("pswd======"+pswd);
+        System.out.println("pswd======"+pswd);*/
 
 
-        Call<LoginCustomerOutput> callLogin =  apiInterface.customerLogin(id,pswd);
+       // Call<LoginCustomerOutput> callLogin =  apiInterface.customerLogin(id,pswd);
 
+        Call<LoginCustomerOutput> callLogin =  apiInterface.customerLogin(loginCustomerInput);
 
         System.out.println("callll====="+callLogin);
 
@@ -262,7 +357,7 @@ protected void onCreate(Bundle savedInstanceState) {
 
 
             @Override
-            public void onResponse(Call<LoginCustomerOutput> call, Response<LoginCustomerOutput> response) {
+            public void onResponse(Call<LoginCustomerOutput> call, final Response<LoginCustomerOutput> response) {
 
               System.out.println("call====="+call);
                 System.out.println("body" + response.body());
@@ -272,31 +367,71 @@ protected void onCreate(Bundle savedInstanceState) {
 
                 try {
 
-                   if (response.code()==200) {
-
+                    //  if (response.code()==200 && (response.body().getData().getError()==null)) {
+                    if (response.isSuccessful()) {
                        /* int statusCode = response.code();
 
                     System.out.println("Code" + statusCode);*/
 
-                    System.out.println("body" + response.body().toString());
+                        System.out.println("body" + response.body().toString());
 
-                       user_fullName = response.body().getData().getFullName();
-                       System.out.println("name----" + user_fullName);
+                        user_fullName = response.body().getData().getFullName();
+                        System.out.println("name----" + user_fullName);
 
-                       user_uuid = response.body().getData().getUuid();
-                       System.out.println("name----" + user_uuid);
+                        SharedPreferences.Editor user_name_editor = sharedPreferencesLogin.edit();
+                        user_name_editor.putString("user_full_name", user_fullName);
+                        user_name_editor.commit();
 
-                        Intent i = new Intent(getApplication(), ProfileActivity.class);
+                        user_uuid = response.body().getData().getUuid();
+                        user_unigue_id = user_uuid;
+
+                        SharedPreferences.Editor editor = sharedPreferencesLogin.edit();
+                        editor.putString("user_unique_id", user_uuid);
+                        editor.commit();
+
+                        System.out.println("name----" + user_uuid);
+
+                        sharedPreferencesLogin.edit().putBoolean("logged", true).apply();
+
+                        Intent i = new Intent(getApplication(), MainActivity.class);
                         startActivity(i);
+
+                        //checking user logged in or not
+
 
                         Log.i(TAG, "login successful" + response);
                     }
+                  /*  else if ( response.code() == 500 && response.body().getData().getError()!=null)
+                    {
+
+                        System.out.println("data----------+response.body().getData().getError()");
+                        // emailId_TextInputlayout.setError(response.body().getData().getError());
+                    }*/
+
                     else {
-                        Log.i(TAG, "post not submitted to API." + response.errorBody());
-                        Toast.makeText(getApplicationContext(), "Unsuccess login+++++++++", Toast.LENGTH_LONG).show();
+                        try {
+                            String errorBodyMessage = response.errorBody().source().toString();
+                            System.out.println("error msg----------" + errorBodyMessage);
+                            if (!TextUtils.isEmpty(errorBodyMessage)) {
+                                Gson gson = new Gson();
+                                GeneralError genericErrorPojo = gson.fromJson(errorBodyMessage, GeneralError.class);
+
+                                String errorMsg = genericErrorPojo.getError();
+                                System.out.println("error msg----------" + errorMsg);
+                                emailId_TextInputlayout.setError(errorMsg);
+
+                            }
+                        /*System.out.println("data----------+response.body().getData().getError()");
+                         emailId_TextInputlayout.setError(response.body().getData().getError());
+                        Log.i(TAG, "post not submitted to API." + response.errorBody());*/
+                            //Toast.makeText(getApplicationContext(), "Unsuccess login+++++++++", Toast.LENGTH_LONG).show();
+                        } catch (Exception e) {
+                            System.out.println("Exception -----------" + e);
+                        }
                     }
-               }
+                }
                     catch (Exception e) {
+
                     e.printStackTrace();
                     System.out.println("Error----------"+e);
                 }
@@ -304,9 +439,10 @@ protected void onCreate(Bundle savedInstanceState) {
 
 
             @Override
-            public void onFailure(Call<LoginCustomerOutput> call, Throwable t) {
+            public void onFailure(Call<LoginCustomerOutput> call, Throwable t ) {
                 Log.e(TAG, "Unable to submit post to login API.");
-                Toast.makeText(getApplicationContext(), "Failed+++++++++", Toast.LENGTH_LONG).show();
+
+                //Toast.makeText(getApplicationContext(), "Failed+++++++++", Toast.LENGTH_LONG).show();
                 t.printStackTrace();
             }
         });

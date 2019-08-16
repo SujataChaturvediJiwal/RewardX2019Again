@@ -11,9 +11,9 @@ public class RegisterToRewardsProgramInput {
     @SerializedName("vendor_uuid")
     @Expose
     private String vendorUuid;
-    @SerializedName("registered_via")
+    @SerializedName("membership_uuid")
     @Expose
-    private String registeredVia;
+    private String membershipUuid;
 
     public String getUserUuid() {
         return userUuid;
@@ -31,11 +31,11 @@ public class RegisterToRewardsProgramInput {
         this.vendorUuid = vendorUuid;
     }
 
-    public String getRegisteredVia() {
-        return registeredVia;
+    public String getMembershipUuid() {
+        return membershipUuid;
     }
 
-    public void setRegisteredVia(String registeredVia) {
-        this.registeredVia = registeredVia;
+    public void setMembershipUuid(String membershipUuid) {
+        this.membershipUuid = membershipUuid;
     }
 }

@@ -124,11 +124,13 @@
     </RelativeLayout>
 
     <ImageView
+        android:id="@+id/barcode_descriptionOfRegisteredRewards"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/bar_code"
         android:adjustViewBounds="true"/>
     <TextView
+        android:id="@+id/user_id_in_vendorRegisteredRewards"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="1234556770000"
@@ -232,6 +234,7 @@
             <TextView
                 android:layout_width="0sp"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10sp"
                 android:layout_weight="1"
                 android:text="Reward details"
                 android:gravity="right"

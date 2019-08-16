@@ -18,10 +18,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/profile_blue_background">
+            android:orientation="horizontal"
+            android:background="@drawable/blue">
+            <ImageView
+                android:id="@+id/offer_description_back_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_back_black_24dp"/>
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
                 android:text="Wellness \noffer"
@@ -132,10 +137,16 @@
                         android:textSize="16dp"
                         android:textColor="@color/colorBlack"/>
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Valid till"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorBlack"/>
+                    <TextView
                         android:id="@+id/offer_description_endDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Valid till \n4 July, 2019"
+                        android:text="4 July, 2019"
                         android:textSize="16dp"
                         android:textColor="@color/colorBlack"/>
                 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.kryptoblocks.rewardx2019;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -33,6 +34,7 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -43,6 +45,7 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+import com.kryptoblocks.rewardx2019.fragments.ActivitiesFragment;
 import com.kryptoblocks.rewardx2019.fragments.RewardsProfileFragment;
 import com.kryptoblocks.rewardx2019.fragments.TokensProfileFragment;
 import com.kryptoblocks.rewardx2019.utilityy.Utility;
@@ -60,7 +63,7 @@ import java.util.Map;
 
 import static android.location.LocationManager.GPS_PROVIDER;
 import static com.kryptoblocks.rewardx2019.SocialLoginActivity.user_fullName;
-import static com.kryptoblocks.rewardx2019.SocialLoginActivity.user_uuid;
+//import static com.kryptoblocks.rewardx2019.SocialLoginActivity.user_uuid;
 
 public class ProfileActivity extends AppCompatActivity implements LocationListener{
 
@@ -79,11 +82,19 @@ public class ProfileActivity extends AppCompatActivity implements LocationListen
     private static final int WHITE = 0xFFFFFFFF;
     private static final int BLACK = 0xFF000000;
 
+    public static final String mypreferenceLogin = "mypref";
+    SharedPreferences sharedPreferencesProfile;
+    String user_id_profile;
+    String user_full_name_profile;
+
     TextView user_id_textView, user_name;
     ImageView user_bardcode_img, image_profile;
+    //LinearLayout image_profile;
 
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     private String userChoosenTask;
+    LinearLayout linear_layout_profile;
+    FrameLayout profile_content;
 
 
     private void RewardsProfileFragment() {
@@ -94,6 +105,20 @@ public class ProfileActivity extends AppCompatActivity implements LocationListen
         fragmentTransaction.replace(R.id.profile_fragment, rewardsProfileFragment);
         fragmentTransaction.commit();
         }
+
+  /* private void ActivitiesFragment() {
+
+        *//*ActivitiesFragment activitiesFragment = new ActivitiesFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.profile_content_frame, activitiesFragment);
+        fragmentTransaction.commit();*//*
+
+       Fragment mFragment = null;
+       mFragment = new ActivitiesFragment();
+       FragmentManager fragmentManager = getSupportFragmentManager();
+       fragmentManager.beginTransaction().replace(R.id.profile_content_frame, mFragment).commit();
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,10 +144,25 @@ public class ProfileActivity extends AppCompatActivity implements LocationListen
         user_name = findViewById(R.id.user_name_profile);
         user_bardcode_img = findViewById(R.id.bar_code_userProfile);
         image_profile = findViewById(R.id.profile_image);
+        linear_layout_profile = findViewById(R.id.linear_layout_profile_page);
+        profile_content = findViewById(R.id.profile_content_frame);
 
-        user_name.setText(user_fullName);
+        sharedPreferencesProfile = getSharedPreferences(mypreferenceLogin, Context.MODE_PRIVATE);
+        //retrieving data of shared preferences
+        user_full_name_profile = sharedPreferencesProfile.getString("user_full_name","hi");
 
-        user_id_textView.setText(user_uuid);
+        user_name.setText(user_full_name_profile);
+
+        System.out.println("User full name *************"+user_full_name_profile);
+        System.out.println("User full name i profile page*************"+user_name.getText().toString());
+
+        sharedPreferencesProfile = getSharedPreferences(mypreferenceLogin, Context.MODE_PRIVATE);
+        //retrieving data of shared preferences
+        user_id_profile = sharedPreferencesProfile.getString("user_unique_id","hi");
+
+        Toast.makeText(ProfileActivity.this, "User id:" + user_id_profile , Toast.LENGTH_SHORT).show();
+
+        user_id_textView.setText(user_id_profile);
 
 
         tabLayoutProfile = findViewById(R.id.tabLayout_activity_profile);
@@ -172,20 +212,34 @@ public class ProfileActivity extends AppCompatActivity implements LocationListen
         see_activities.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i= new Intent(getApplicationContext(),MainActivity.class);
-                startActivity(i);
+               /*Intent i= new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(i);*/
+               /* linear_layout_profile.setVisibility(View.GONE);
+                profile_content.setVisibility(View.VISIBLE);*/
+                    ActivitiesFragment newFragment = new ActivitiesFragment();
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.attach(new ActivitiesFragment()).commit();
+
+             //ActivitiesFragment();
+
+
             }
         });
 
 
-        sharedPreferences = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
+       /* sharedPreferences = getSharedPreferences(mypreference, Context.MODE_PRIVATE);
 
-       // getLocation();
+        if (ContextCompat.checkSelfPermission(getApplication(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplication(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+
+        }
+        getLocation();
 
         //retrieving data of shared preferences
         String lat = sharedPreferences.getString("shared_lati","hi");
         String longi = sharedPreferences.getString("shared_longi","bye");
-        Toast.makeText(ProfileActivity.this, "Shared latitude:" + lat + " Shared longitude:" + longi, Toast.LENGTH_SHORT).show();
+        Toast.makeText(ProfileActivity.this, "Shared latitude:" + lat + " Shared longitude:" + longi, Toast.LENGTH_SHORT).show();*/
 
   //barcode---------------------------------------------------------
         LinearLayout lin_layout = new LinearLayout(this);
@@ -194,7 +248,7 @@ public class ProfileActivity extends AppCompatActivity implements LocationListen
         // barcode image
         Bitmap bitmap = null;
         try {
-            bitmap = encodeAsBitmap(user_uuid, BarcodeFormat.CODE_128, 1500, 400);
+            bitmap = encodeAsBitmap(user_id_profile, BarcodeFormat.CODE_128, 1500, 400);
             user_bardcode_img.setImageBitmap(bitmap);
             }
             catch (WriterException e) {
@@ -226,6 +280,7 @@ public class ProfileActivity extends AppCompatActivity implements LocationListen
                 ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
 
             }
+
             Location location = locationManager.getLastKnownLocation(bestProvider);
 
             if (location != null) {
@@ -330,8 +385,7 @@ public class ProfileActivity extends AppCompatActivity implements LocationListen
     //for profile image
     private void selectImage() {
 
-        final CharSequence[] items = {"Take Photo", "Choose from Library",
-                "Cancel"};
+        final CharSequence[] items = {"Take Photo", "Choose from Library"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Add Photo!");
@@ -346,15 +400,14 @@ public class ProfileActivity extends AppCompatActivity implements LocationListen
                         cameraIntent();
 
 
-
-                } else if (items[item].equals("Choose from Library")) {
+                    } else if (items[item].equals("Choose from Library")) {
                     userChoosenTask = "Choose from Library";
                     if (result)
                         galleryIntent();
 
-                } else if (items[item].equals("Cancel")) {
+                } /*else if (items[item].equals("Cancel")) {
                     dialog.dismiss();
-                }
+                }*/
             }
         });
         builder.show();

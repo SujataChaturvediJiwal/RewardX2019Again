@@ -16,91 +16,23 @@
         android:orientation="vertical">
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorWhite"
-            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/profile_blue_background"
+                android:background="@drawable/blue"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="40dp"
-                    android:text="Total \npoints"
+                    android:text="Coupons \nfor you"
                     android:textColor="@color/colorBlack"
                     android:textSize="40dp"
                     android:textStyle="bold" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
 
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="40dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_weight="1"
-                        android:text="7218"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="40dp"
-                        android:textStyle="bold" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:text="$"
-                                android:textColor="@color/colorBlack"
-                                android:textSize="18dp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:text="14609"
-                                android:textColor="@color/colorBlack"
-                                android:textSize="18dp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="in currencies"
-                            android:textColor="@color/colorBlack"
-                            android:textSize="18dp" />
-
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -122,7 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Featured Offers"
+                    android:text="Featured Coupons"
                     android:textColor="@color/colorBlack" />
 
                 <TextView
@@ -191,7 +123,6 @@
             android:id="@+id/recyclerView_offers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorLightGrey"
             android:orientation="vertical">
 
         </android.support.v7.widget.RecyclerView>

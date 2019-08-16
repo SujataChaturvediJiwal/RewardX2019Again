@@ -3,6 +3,7 @@ package com.kryptoblocks.rewardx2019.network;
 import android.content.Context;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -40,8 +41,21 @@ public class ApiClient {
     }
 */
 
-    private final static String BASE_URL = "http://192.168.163.2:3000/api/v1/customers/";
-    private final static String BASE_URL2 = "http://192.168.163.2:3000/api/v1/incentives/";
+
+//original
+   /* private final static String BASE_URL = "http://192.168.163.2:3000/api/customers/";
+    private final static String BASE_URL2 = "http://192.168.163.2:3000/api/v1/incentives/";*/
+
+   /* private final static String BASE_URL = "http://18.234.161.126/api/customers/";
+    private final static String BASE_URL2 = "http://18.234.161.126/api/v1/incentives/";*/
+
+   /* private final static String BASE_URL = "http://ec2-18-234-161-126.compute-1.amazonaws.com:3000/api/customers/";
+    private final static String BASE_URL2 = "http://ec2-18-234-161-126.compute-1.amazonaws.com:3000/api/v1/incentives";
+*/
+
+     private final static String BASE_URL = "http://ec2-18-234-161-126.compute-1.amazonaws.com:3000/api/customers/";
+    private final static String BASE_URL2 = "http://ec2-18-234-161-126.compute-1.amazonaws.com:3000/api/v1/incentives/";
+
 
     public static ApiClient apiClient;
     private Retrofit retrofit = null;
@@ -70,6 +84,10 @@ public class ApiClient {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.connectTimeout(5, TimeUnit.MINUTES) // connect timeout
+                .writeTimeout(5, TimeUnit.MINUTES) // write timeout
+                .readTimeout(5, TimeUnit.MINUTES);
+
         httpClient.addInterceptor(logging);
 
         httpClient.addInterceptor(new Interceptor() {
@@ -110,9 +128,9 @@ public class ApiClient {
                 .baseUrl(BASE_URL2)
                 .client(httpClient.build())
                 .addConverterFactory(GsonConverterFactory.create())
-                .build();
+                        .build();
 
 
-        return retrofit;
-    }
-}
+                        return retrofit;
+                        }
+                        }

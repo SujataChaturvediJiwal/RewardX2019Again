@@ -23,7 +23,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.MyViewHold
 
     Context mContext;
     List<GetAllVendorOffersData> offersPojoList;
-    public static String offer_id;
+    public static String offer_id, vendor_id;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView offer_description, offer_shop_name, offer_discount, offer_token;
@@ -74,6 +74,7 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.MyViewHold
             public void onClick(View view) {
 
                 offer_id = list.getUuid();
+                vendor_id = list.getVendorUuid();
                 Intent i = new Intent(mContext, OfferDescriptionActivity.class);
                 mContext.startActivity(i);
             }

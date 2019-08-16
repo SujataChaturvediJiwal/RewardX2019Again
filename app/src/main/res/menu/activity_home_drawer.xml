@@ -3,24 +3,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="single" android:id="@+id/grp1">
     <item
         android:id="@+id/nav_dashboard"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/ic_launcher_background"
         android:title="Dashboard" />
+
     <item
         android:id="@+id/nav_activities"
         android:icon="@drawable/ic_launcher_foreground"
         android:title="Activities" />
-        <item
+
+    <item
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_launcher_foreground"
             android:title="Profile" />
+    </group>
+
+
     <item
-        android:id="@+id/nav_coupons"
+        android:id="@+id/nav_help"
         android:icon="@drawable/ic_launcher_foreground"
-        android:title="Coupons" />
-    <item
+        android:title="Help" />
+
+        <item
+            android:id="@+id/nav_logOut"
+            android:icon="@drawable/ic_launcher_foreground"
+            android:title="Log Out" />
+
+   <!-- <item
         android:id="@+id/nav_compaigns"
         android:icon="@drawable/ic_launcher_foreground"
         android:title="Compaigns" />
@@ -31,11 +42,7 @@
     <item
         android:id="@+id/nav_billing"
         android:icon="@drawable/ic_launcher_foreground"
-        android:title="Billing" />
-    <item
-        android:id="@+id/nav_support"
-        android:icon="@drawable/ic_launcher_foreground"
-        android:title="Support" />
+        android:title="Billing" />-->
 
-    </group>
+
 </menu>

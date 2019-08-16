@@ -3,12 +3,15 @@ package com.kryptoblocks.rewardx2019.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.kryptoblocks.rewardx2019.AllVendorRewardsActivity;
@@ -27,10 +30,13 @@ public class RegisteredVendorRewardsAdapter extends RecyclerView.Adapter<Registe
     String reward_date;
     public static String vendor_reward_uuid,vendorRewards_name;
 
+    public String converted_date;
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView reward_merch_name, reward_date;
+        public TextView reward_merch_name, reward_date, membership_id;
         public LinearLayout layout_rewards;
         public ImageView reward_img;
+        public CheckBox checkbox_profile_rewards;
 
 
         public MyViewHolder(View view) {
@@ -38,9 +44,10 @@ public class RegisteredVendorRewardsAdapter extends RecyclerView.Adapter<Registe
 
             reward_merch_name = view.findViewById(R.id.reward_profile_merchant_name);
             reward_date = view.findViewById(R.id.reward_profile_date);
-            reward_img = view.findViewById(R.id.img_reward_profile);
-
+           // reward_img = view.findViewById(R.id.img_reward_profile);
+            checkbox_profile_rewards = view.findViewById(R.id.checkbox_profile_rewards);
             layout_rewards = view.findViewById(R.id.linearLayout_rewards);
+            membership_id = view.findViewById(R.id.reward_id);
 
             }
     }
@@ -79,23 +86,27 @@ public class RegisteredVendorRewardsAdapter extends RecyclerView.Adapter<Registe
 
        final GetRegsiteredVendorsData list = rewardsPojoList.get(position);
 
-        reward_date = list.getCreatedOn();
-      //  dateConverter();
+        reward_date = list.getRegistrationDate();
+       dateConverter();
 
        // String merc = list.getReward_merchant_name();
 
-        holder.reward_merch_name.setText(String.valueOf(list.getVendorName()));
-        holder.reward_date.setText(String.valueOf(list.getCreatedOn()));
-        Glide.with(mContext).load(list.getLogoLink()).error(R.drawable.ic_launcher_foreground).into(holder.reward_img);
-
+        holder.reward_merch_name.setText(String.valueOf(list.getOwnerName()));
+        holder.membership_id.setText(list.getMembershipUuid());
+        holder.reward_date.setText(converted_date);
+       // Glide.with(mContext).load(list.getLogoLink()).error(R.drawable.ic_launcher_foreground).into(holder.reward_img);
+        if(holder.checkbox_profile_rewards.isChecked())
+        {
+            holder.checkbox_profile_rewards.setBackgroundColor(mContext.getResources().getColor(R.color.colorLightBlue));
+        }
         holder.layout_rewards.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                vendor_reward_uuid = list.getUuid();
+               /* vendor_reward_uuid = list.getUuid();
                 System.out.println("Value of vendor reward uuid-----------"+vendor_reward_uuid);
-                vendorRewards_name =list.getVendorName();
+                vendorRewards_name =list.getOwnerName();
                 Intent i = new Intent(mContext, AllVendorRewardsActivity.class);
-                mContext.startActivity(i);
+                mContext.startActivity(i);*/
             }
         });
 
@@ -159,22 +170,21 @@ public class RegisteredVendorRewardsAdapter extends RecyclerView.Adapter<Registe
 
     }*/
 
-    public void dateConverter() {
-
-
-        //  String mytime="Jan 17, 2012";
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
-                "MMM dd, yyyy");
-
-        Date myDate = null;
+    void dateConverter() {
+       // Toast.makeText(mContext, "date function called", Toast.LENGTH_SHORT).show();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         try {
-            myDate = dateFormat.parse(reward_date);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
+            Date d = sdf.parse(reward_date);
+           // Toast.makeText(mContext, "date-========="+d, Toast.LENGTH_SHORT).show();
+            sdf = new SimpleDateFormat("dd MMM yyyy");
+            converted_date = sdf.format(d);
+            System.out.println("date-----"+sdf.format(d));
+        } catch (ParseException ex) {
+            Log.v("Exception", ex.getLocalizedMessage());
         }
+    }
 
 
     }
 
-}
+

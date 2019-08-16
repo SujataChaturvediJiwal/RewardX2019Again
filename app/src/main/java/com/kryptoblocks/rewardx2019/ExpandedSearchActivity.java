@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,19 +33,19 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
-import static com.kryptoblocks.rewardx2019.SocialLoginActivity.user_uuid;
+//import static com.kryptoblocks.rewardx2019.SocialLoginActivity.user_uuid;
 import static com.kryptoblocks.rewardx2019.adapter.SearchMainCategoriesAdapter.search_category_id;
 
 public class ExpandedSearchActivity extends AppCompatActivity {
 
-    TextView cancel_text;
+    TextView cancel_text, header_search_textView, sub_header_textView;
     RecyclerView recycle_search_main;
     ApiInterface apiInterface;
     List<SearchMainCategories> mainCategories;
     SearchMainCategoriesAdapter searchMainCategoriesAdapter;
-    LinearLayout linearLayout_image;
-    String id ="ELEM_PROD_CAT_AIRLINES";
-
+    LinearLayout linearLayout_image, expanded_search_header_layout, search_sub_header_layout;
+    //String id ="ELEM_PROD_CAT_AIRLINES";
+    ImageView img_back, sub_search_back_arrow;
     public static boolean category_main_called = false;
     public static boolean selected_item_clicked = false;
 
@@ -56,19 +57,36 @@ public class ExpandedSearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expanded_search);
 
-        cancel_text = findViewById(R.id.cancel);
+        //cancel_text = findViewById(R.id.cancel);
 
       //  overridePendingTransition(R.anim.slide_to_bottom, R.anim.slide_to_top);
         recycle_search_main = findViewById(R.id.search_main_category_recyclerView);
         linearLayout_image = findViewById(R.id.main_category_search_layout_image);
+        header_search_textView = findViewById(R.id.search_header_textview);
+        img_back = findViewById(R.id.back_arrow_search);
+        expanded_search_header_layout = findViewById(R.id.expanded_search_layout);
+        search_sub_header_layout = findViewById(R.id.expanded_search_subLayout);
+        sub_header_textView = findViewById(R.id.search_sub_header_textview);
+        sub_search_back_arrow = findViewById(R.id.back_arrow_sub_search);
 
-        cancel_text.setOnClickListener(new View.OnClickListener() {
+        img_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getApplication(), MainActivity.class);
                 startActivity(i);
             }
         });
+
+        sub_search_back_arrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplication(), ExpandedSearchActivity.class);
+                startActivity(i);
+            }
+        });
+
+        System.out.println("Value of category_main_called before--------" +category_main_called);
+        System.out.println("Value of selected_item_clicked before--------" +selected_item_clicked);
 
         if(!category_main_called) {
 
@@ -79,6 +97,9 @@ public class ExpandedSearchActivity extends AppCompatActivity {
 
             searchSubCategory();
         }
+
+        System.out.println("Value of category_main_called after--------" +category_main_called);
+        System.out.println("Value of selected_item_clicked after--------" +selected_item_clicked);
             // searchSubCategory();
     }
 
@@ -109,12 +130,19 @@ public class ExpandedSearchActivity extends AppCompatActivity {
 
                 if(response.code()== 200) {
                     // if (passwordRegister == rePassword_register.getText().toString()) {
+                  //  header_search_textView.setVisibility(View.VISIBLE);
 
                     int statusCode = response.code();
 
                     System.out.println("Code" + statusCode);
 
                     System.out.println("body" + response.body().getData());
+
+                    category_main_called = true;
+                    selected_item_clicked = true;
+
+                    System.out.println("Value of category_main_called inside api call--------" +category_main_called);
+                    System.out.println("Value of selected_item_clicked inside api call--------" +selected_item_clicked);
 
                     mainCategories = new ArrayList<>();
                     searchMainCategoriesAdapter = new SearchMainCategoriesAdapter(getApplicationContext(), response.body().getData());
@@ -155,7 +183,7 @@ public class ExpandedSearchActivity extends AppCompatActivity {
         // apiInterface = ApiClient.getRetrofit().create(ApiInterface.class);
 
 
-        Call<SearchAllSubCategories> call1 = apiInterface.getSearchSubCategories(id);
+        Call<SearchAllSubCategories> call1 = apiInterface.getSearchSubCategories(search_category_id);
 
         System.out.println("callll====="+call1);
 
@@ -169,12 +197,15 @@ public class ExpandedSearchActivity extends AppCompatActivity {
                     // if (passwordRegister == rePassword_register.getText().toString()) {
 
                     int statusCode = response.code();
+                    expanded_search_header_layout.setVisibility(View.GONE);
+                    search_sub_header_layout.setVisibility(View.VISIBLE);
+                    sub_header_textView.setText(search_category_id);
 
                     System.out.println("Code" + statusCode);
 
                     System.out.println("body" + response.body().getData());
 
-                    category_main_called = true;
+                    selected_item_clicked = true;
 
                     mainCategories = new ArrayList<>();
                     searchSubCategoriesAdapter = new SearchSubCategoriesAdapter(getApplicationContext(), response.body().getData());

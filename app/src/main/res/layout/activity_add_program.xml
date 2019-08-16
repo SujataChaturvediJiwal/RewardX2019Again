@@ -7,6 +7,7 @@
     tools:context=".AddProgramActivity">
 
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,7 +17,28 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:background="@drawable/blue"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/add_program_back_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_back_black_24dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:text="Join\nProgram"
+                android:textColor="@color/colorBlack"
+                android:textSize="40sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
             android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
@@ -25,6 +47,7 @@
                 android:textColor="@color/colorBlack"
                 android:textSize="20sp"/>
             <EditText
+                android:id="@+id/vendor_membership_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Company member number"
@@ -39,25 +62,54 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Business number"
+                android:text="Business Name"
                 android:textColor="@color/colorBlack"
                 android:textSize="20sp"/>
             <EditText
+                android:id="@+id/vendor_business_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Business number"
-                  />
+                android:hint="Business name"
 
+                />
+            <ListView
+                android:id="@+id/list_view_vendor_names"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+               />
         </LinearLayout>
 
-    </LinearLayout>
 
+   <!-- <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Combine and add to total rewards"
+            android:textSize="20sp"/>
+        <CheckBox
+            android:id="@+id/checkbox_combineAdd_rewards"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right|center"
+            android:layoutDirection="rtl" />
+    </LinearLayout>-->
+
+    </LinearLayout>
     <Button
         android:id="@+id/save_add_program_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Save"
+        android:textSize="16sp"
         android:layout_margin="5dp"
         android:layout_alignParentBottom="true"
+        android:background="@color/colorLightBlue"
         android:gravity="center"/>
 </RelativeLayout>

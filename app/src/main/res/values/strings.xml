@@ -12,7 +12,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="splash_intro_text">Earn rewards and tokens from your favourite brand from your daily purchases</string>
-    <string name="termsServices">By registering you are\nagreeing\nto our <u>terms of services</u></string>
+    <string name="termsServices"><u>\tterms of services</u></string>
     <string name="profile_total_rewards">Check to combine and\nadd to total rewards</string>
     <string name="sign_up_now"><u>Sign up Now!</u></string>
     <string name="err_msg_password_match"><u>Passwords do not match</u></string>
@@ -25,6 +25,7 @@
     <!--  Web client id-->
     <string name="server_client_id">1008907055248-5pvuol9sff3ndl4938h8cmgs30cqs1fe.apps.googleusercontent.com</string>
     <string name="cash_transfer">How much cash would you like to transfer?</string>
+    <string name="back"><u>Back</u></string>
 
 
     <string-array name="months_inNumber">

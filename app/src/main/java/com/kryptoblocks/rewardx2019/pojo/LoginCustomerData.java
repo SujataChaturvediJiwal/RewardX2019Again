@@ -6,235 +6,242 @@ import com.google.gson.annotations.SerializedName;
 public class LoginCustomerData {
 
     @SerializedName("_id")
-@Expose
-private String id;
-@SerializedName("password")
-@Expose
-private String password;
-@SerializedName("email")
-@Expose
-private String email;
-@SerializedName("login_name")
-@Expose
-private String loginName;
-@SerializedName("login_type")
-@Expose
-private String loginType;
-@SerializedName("uuid")
-@Expose
-private String uuid;
-@SerializedName("__v")
-@Expose
-private Integer v;
-@SerializedName("is_active")
-@Expose
-private Boolean isActive;
-@SerializedName("has_completed_profile")
-@Expose
-private Boolean hasCompletedProfile;
-@SerializedName("last_modified")
-@Expose
-private String lastModified;
-@SerializedName("created_on")
-@Expose
-private String createdOn;
-@SerializedName("profile_link")
-@Expose
-private String profileLink;
-@SerializedName("date_of_birth")
-@Expose
-private String dateOfBirth;
-@SerializedName("phone")
-@Expose
-private Object phone;
-@SerializedName("google_id")
-@Expose
-private String googleId;
-@SerializedName("facebook_id")
-@Expose
-private String facebookId;
-@SerializedName("full_name")
-@Expose
-private String fullName;
-@SerializedName("last_name")
-@Expose
-private String lastName;
-@SerializedName("middle_name")
-@Expose
-private String middleName;
-@SerializedName("first_name")
-@Expose
-private String firstName;
-@SerializedName("salutation")
-@Expose
-private String salutation;
+    @Expose
+    private String id;
+    @SerializedName("phone")
+    @Expose
+    private String phone;
+    @SerializedName("password")
+    @Expose
+    private String password;
+    @SerializedName("email")
+    @Expose
+    private String email;
+    @SerializedName("login_name")
+    @Expose
+    private String loginName;
+    @SerializedName("login_type")
+    @Expose
+    private String loginType;
+    @SerializedName("uuid")
+    @Expose
+    private String uuid;
+    @SerializedName("__v")
+    @Expose
+    private Integer v;
+    @SerializedName("is_active")
+    @Expose
+    private Boolean isActive;
+    @SerializedName("has_completed_profile")
+    @Expose
+    private Boolean hasCompletedProfile;
+    @SerializedName("last_modified")
+    @Expose
+    private String lastModified;
+    @SerializedName("created_on")
+    @Expose
+    private String createdOn;
+    @SerializedName("profile_link")
+    @Expose
+    private String profileLink;
+    @SerializedName("date_of_birth")
+    @Expose
+    private String dateOfBirth;
+    @SerializedName("google_id")
+    @Expose
+    private String googleId;
+    @SerializedName("facebook_id")
+    @Expose
+    private String facebookId;
+    @SerializedName("full_name")
+    @Expose
+    private String fullName;
+    @SerializedName("last_name")
+    @Expose
+    private String lastName;
+    @SerializedName("middle_name")
+    @Expose
+    private String middleName;
+    @SerializedName("first_name")
+    @Expose
+    private String firstName;
+    @SerializedName("salutation")
+    @Expose
+    private String salutation;
+    @SerializedName("error")
+    @Expose
+    private String error;
 
-public String getId() {
-return id;
-}
+    public String getError() { return error; }
 
-public void setId(String id) {
-this.id = id;
-}
+    public void setError(String error) { this.error = error; }
 
-public String getPassword() {
-return password;
-}
+    public String getId() {
+        return id;
+    }
 
-public void setPassword(String password) {
-this.password = password;
-}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-public String getEmail() {
-return email;
-}
+    public String getPhone() {
+        return phone;
+    }
 
-public void setEmail(String email) {
-this.email = email;
-}
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-public String getLoginName() {
-return loginName;
-}
+    public String getPassword() {
+        return password;
+    }
 
-public void setLoginName(String loginName) {
-this.loginName = loginName;
-}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-public String getLoginType() {
-return loginType;
-}
+    public String getEmail() {
+        return email;
+    }
 
-public void setLoginType(String loginType) {
-this.loginType = loginType;
-}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-public String getUuid() {
-return uuid;
-}
+    public String getLoginName() {
+        return loginName;
+    }
 
-public void setUuid(String uuid) {
-this.uuid = uuid;
-}
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
+    }
 
-public Integer getV() {
-return v;
-}
+    public String getLoginType() {
+        return loginType;
+    }
 
-public void setV(Integer v) {
-this.v = v;
-}
+    public void setLoginType(String loginType) {
+        this.loginType = loginType;
+    }
 
-public Boolean getIsActive() {
-return isActive;
-}
+    public String getUuid() {
+        return uuid;
+    }
 
-public void setIsActive(Boolean isActive) {
-this.isActive = isActive;
-}
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
-public Boolean getHasCompletedProfile() {
-return hasCompletedProfile;
-}
+    public Integer getV() {
+        return v;
+    }
 
-public void setHasCompletedProfile(Boolean hasCompletedProfile) {
-this.hasCompletedProfile = hasCompletedProfile;
-}
+    public void setV(Integer v) {
+        this.v = v;
+    }
 
-public String getLastModified() {
-return lastModified;
-}
+    public Boolean getIsActive() {
+        return isActive;
+    }
 
-public void setLastModified(String lastModified) {
-this.lastModified = lastModified;
-}
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
 
-public String getCreatedOn() {
-return createdOn;
-}
+    public Boolean getHasCompletedProfile() {
+        return hasCompletedProfile;
+    }
 
-public void setCreatedOn(String createdOn) {
-this.createdOn = createdOn;
-}
+    public void setHasCompletedProfile(Boolean hasCompletedProfile) {
+        this.hasCompletedProfile = hasCompletedProfile;
+    }
 
-public String getProfileLink() {
-return profileLink;
-}
+    public String getLastModified() {
+        return lastModified;
+    }
 
-public void setProfileLink(String profileLink) {
-this.profileLink = profileLink;
-}
+    public void setLastModified(String lastModified) {
+        this.lastModified = lastModified;
+    }
 
-public String getDateOfBirth() {
-return dateOfBirth;
-}
+    public String getCreatedOn() {
+        return createdOn;
+    }
 
-public void setDateOfBirth(String dateOfBirth) {
-this.dateOfBirth = dateOfBirth;
-}
+    public void setCreatedOn(String createdOn) {
+        this.createdOn = createdOn;
+    }
 
-public Object getPhone() {
-return phone;
-}
+    public String getProfileLink() {
+        return profileLink;
+    }
 
-public void setPhone(Object phone) {
-this.phone = phone;
-}
+    public void setProfileLink(String profileLink) {
+        this.profileLink = profileLink;
+    }
 
-public String getGoogleId() {
-return googleId;
-}
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
 
-public void setGoogleId(String googleId) {
-this.googleId = googleId;
-}
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
 
-public String getFacebookId() {
-return facebookId;
-}
+    public String getGoogleId() {
+        return googleId;
+    }
 
-public void setFacebookId(String facebookId) {
-this.facebookId = facebookId;
-}
+    public void setGoogleId(String googleId) {
+        this.googleId = googleId;
+    }
 
-public String getFullName() {
-return fullName;
-}
+    public String getFacebookId() {
+        return facebookId;
+    }
 
-public void setFullName(String fullName) {
-this.fullName = fullName;
-}
+    public void setFacebookId(String facebookId) {
+        this.facebookId = facebookId;
+    }
 
-public String getLastName() {
-return lastName;
-}
+    public String getFullName() {
+        return fullName;
+    }
 
-public void setLastName(String lastName) {
-this.lastName = lastName;
-}
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 
-public String getMiddleName() {
-return middleName;
-}
+    public String getLastName() {
+        return lastName;
+    }
 
-public void setMiddleName(String middleName) {
-this.middleName = middleName;
-}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-public String getFirstName() {
-return firstName;
-}
+    public String getMiddleName() {
+        return middleName;
+    }
 
-public void setFirstName(String firstName) {
-this.firstName = firstName;
-}
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
 
-public String getSalutation() {
-return salutation;
-}
+    public String getFirstName() {
+        return firstName;
+    }
 
-public void setSalutation(String salutation) {
-this.salutation = salutation;
-}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getSalutation() {
+        return salutation;
+    }
+
+    public void setSalutation(String salutation) {
+        this.salutation = salutation;
+    }
 
 }

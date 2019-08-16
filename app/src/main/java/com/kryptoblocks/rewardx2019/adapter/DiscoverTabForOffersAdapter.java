@@ -63,7 +63,7 @@ public class DiscoverTabForOffersAdapter extends RecyclerView.Adapter<DiscoverTa
 
         DiscoverData list = discoverTabForOffersList.get(position);
 
-       holder.text1.setText(String.valueOf(list.getCompanyCategoryCode()));
+       /*holder.text1.setText(String.valueOf(list.getCompanyCategoryCode()));
         holder.text2.setText(String.valueOf(list.getVendorName()));
       //  Glide.with(mContext).load(list.getOffer_image()).error(R.drawable.ic_launcher_foreground).into(holder.image);
         Glide.with(mContext).load(list.getLogoLink()).asBitmap().into(new SimpleTarget<Bitmap>(80, 80) {
@@ -74,7 +74,7 @@ public class DiscoverTabForOffersAdapter extends RecyclerView.Adapter<DiscoverTa
                     holder.linearLayout_image.setBackground(drawable);
                 }
             }
-        });
+        });*/
 
         holder.linearLayout_image.setOnClickListener(new View.OnClickListener() {
             @Override

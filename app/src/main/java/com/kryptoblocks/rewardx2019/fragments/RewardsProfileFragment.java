@@ -1,10 +1,13 @@
 package com.kryptoblocks.rewardx2019.fragments;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -29,7 +32,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
-import static com.kryptoblocks.rewardx2019.SocialLoginActivity.user_uuid;
+import static com.kryptoblocks.rewardx2019.TranslucentDiscoverActivity.flag_join;
+//import static com.kryptoblocks.rewardx2019.SocialLoginActivity.user_uuid;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,6 +47,10 @@ public class RewardsProfileFragment extends Fragment {
     RegisteredVendorRewardsAdapter rewardsAdapter;
     public static String vendor_reward_uuid;
     ApiInterface apiInterface;
+
+    public static final String mypreferenceLogin = "mypref";
+    SharedPreferences sharedPreferencesRewardsProfile;
+    String user_id_rewardsProfile;
 
     public RewardsProfileFragment() {
         // Required empty public constructor
@@ -61,12 +69,19 @@ public class RewardsProfileFragment extends Fragment {
         add_text_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+               // flag_join = 0;
                 Intent i = new Intent(getContext(), AddProgramActivity.class);
                 startActivity(i);
             }
         });
 
         recyle_rewards= view.findViewById(R.id.recycleView_rewards);
+
+        sharedPreferencesRewardsProfile = this.getActivity().getSharedPreferences(mypreferenceLogin, Context.MODE_PRIVATE);
+        //retrieving data of shared preferences
+        user_id_rewardsProfile = sharedPreferencesRewardsProfile.getString("user_unique_id","hi");
+
+        //Toast.makeText(getContext(), "User id:" + user_id_rewardsProfile , Toast.LENGTH_SHORT).show();
 
         displayRegisteredVendor();
 
@@ -119,7 +134,7 @@ public class RewardsProfileFragment extends Fragment {
        // apiInterface = ApiClient.getRetrofit().create(ApiInterface.class);
 
 
-        Call<GetRegisteredVendors> call1 = apiInterface.getRegisteredCustomers(user_uuid);
+        Call<GetRegisteredVendors> call1 = apiInterface.getRegisteredCustomers(user_id_rewardsProfile);
 
         System.out.println("callll====="+call1);
 
@@ -142,20 +157,21 @@ public class RewardsProfileFragment extends Fragment {
                     RecyclerView.LayoutManager subLayoutManager =
                             new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 
+                    recyle_rewards.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
                     recyle_rewards.setLayoutManager(subLayoutManager);
 
                     recyle_rewards.setItemAnimator(new DefaultItemAnimator());
                     recyle_rewards.setAdapter(rewardsAdapter);
 
                     Log.i(TAG, "  success to API." + response);
-                    Toast.makeText(getContext(), "Success register+++++++++", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getContext(), "Success register+++++++++", Toast.LENGTH_LONG).show();
 
                 }
 
                 else
                 {
                     Log.i(TAG, "post not submitted to API." + response);
-                    Toast.makeText(getContext(), "Unsuccess register+++++++++", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getContext(), "Unsuccess register+++++++++", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -164,7 +180,7 @@ public class RewardsProfileFragment extends Fragment {
             @Override
             public void onFailure(Call<GetRegisteredVendors> call, Throwable t) {
                 Log.e(TAG, "Unable to submit post to register API.");
-                Toast.makeText(getContext(), "Failed+++++++++", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), "Failed+++++++++", Toast.LENGTH_LONG).show();
                 t.printStackTrace();
             }
         });

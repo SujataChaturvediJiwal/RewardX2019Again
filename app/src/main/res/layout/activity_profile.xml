@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".ProfileActivity">
+
+    <LinearLayout
+        android:id="@+id/linear_layout_profile_page"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -16,11 +20,20 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+           <!-- <ImageView
+                android:id="@+id/redeem_desc_back_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20sp"
+                android:layout_marginLeft="10sp"
+                android:src="@drawable/ic_arrow_back_black_24dp"/>-->
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="5">
+
 
                 <ImageView
                     android:id="@+id/profile_image"
@@ -28,14 +41,14 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/profile_deafult_image" />
+                    android:src="@drawable/profile_deafult_image"/>
+
 
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_weight="1"
-
                     android:src="@drawable/profile_trans"
                     />
 
@@ -70,7 +83,7 @@
                         android:textSize="25dp"
                         android:textStyle="bold" />
 
-                    <LinearLayout
+                   <!-- <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
@@ -90,7 +103,7 @@
                             android:text="Level"
                             android:textSize="16dp"
                             android:textStyle="bold" />
-                    </LinearLayout>
+                    </LinearLayout>-->
                 </LinearLayout>
 
                     <LinearLayout
@@ -156,7 +169,7 @@
                     android:id="@+id/see_your_activities_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="See your activities"
+                    android:text="Activities"
                     android:textSize="22dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="5dp"
@@ -169,3 +182,11 @@
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
+    <FrameLayout
+        android:id="@+id/profile_content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation ="vertical"
+       >
+    </FrameLayout>
+</FrameLayout>
