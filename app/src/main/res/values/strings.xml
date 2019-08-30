@@ -16,8 +16,8 @@
     <string name="profile_total_rewards">Check to combine and\nadd to total rewards</string>
     <string name="sign_up_now"><u>Sign up Now!</u></string>
     <string name="err_msg_password_match"><u>Passwords do not match</u></string>
-    <string name="err_msg_username"><u>UserName can't be empty</u></string>
-    <string name="err_msg_emailId"><u>Email Id can't be empty</u></string>
+    <string name="err_msg_username"><u>UserName cannot be empty</u></string>
+    <string name="err_msg_emailId"><u>Email Id cannot be empty</u></string>
     <string name="err_msg_password_empty">Password cannot be empty</string>
 
 

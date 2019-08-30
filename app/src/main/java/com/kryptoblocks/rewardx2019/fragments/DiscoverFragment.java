@@ -321,7 +321,7 @@ public class DiscoverFragment extends Fragment implements NavigationView.OnNavig
                     discoverAdapter = new DiscoverAdapter(getContext(), response.body().getData());
                     RecyclerView.LayoutManager subLayoutManager =
                             new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-                   recyle_discover.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
+                   //recyle_discover.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
 
                     recyle_discover.setLayoutManager(subLayoutManager);
                     // home_prod_recycler.addItemDecoration(new Home_Product_Details_Fragment().GridSpacingItemDecoration(2, dpToPx(10), true));

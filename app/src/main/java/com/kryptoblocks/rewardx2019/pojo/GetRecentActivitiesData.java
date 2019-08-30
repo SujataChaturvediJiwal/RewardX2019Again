@@ -53,6 +53,13 @@ public class GetRecentActivitiesData {
     @Expose
     private String incentiveName;
 
+
+    @SerializedName("customerPOS_uuid")
+    @Expose
+    private String customerPOSUuid;
+    @SerializedName("incentive_name")
+
+
     public String getId() {
         return id;
     }
@@ -61,13 +68,6 @@ public class GetRecentActivitiesData {
         this.id = id;
     }
 
-    public String getRedeemDateTime() {
-        return redeemDateTime;
-    }
-
-    public void setRedeemDateTime(String redeemDateTime) {
-        this.redeemDateTime = redeemDateTime;
-    }
 
     public String getOwnerUuid() {
         return ownerUuid;
@@ -172,5 +172,9 @@ public class GetRecentActivitiesData {
     public void setIncentiveName(String incentiveName) {
         this.incentiveName = incentiveName;
     }
+
+    public String getCustomerPOSUuid() { return customerPOSUuid; }
+
+    public void setCustomerPOSUuid(String customerPOSUuid) { this.customerPOSUuid = customerPOSUuid; }
 
 }

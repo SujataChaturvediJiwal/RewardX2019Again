@@ -158,6 +158,20 @@ public class DiscoverData {
     @Expose
     private String uopVariance;
 
+
+
+
+    @SerializedName("owner_name")
+    @Expose
+    private String ownerName;
+    @SerializedName("owner_uuid")
+    @Expose
+    private String ownerUuid;
+    @SerializedName("awarded_count")
+    @Expose
+    private Integer awardedCount;
+
+
     public String getId() {
         return id;
     }
@@ -564,6 +578,30 @@ public class DiscoverData {
 
     public void setUopVariance(String uopVariance) {
         this.uopVariance = uopVariance;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+
+    public String getOwnerUuid() {
+        return ownerUuid;
+    }
+
+    public void setOwnerUuid(String ownerUuid) {
+        this.ownerUuid = ownerUuid;
+    }
+
+    public Integer getAwardedCount() {
+        return awardedCount;
+    }
+
+    public void setAwardedCount(Integer awardedCount) {
+        this.awardedCount = awardedCount;
     }
 
 }

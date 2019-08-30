@@ -2,6 +2,7 @@ package com.kryptoblocks.rewardx2019.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,25 +19,33 @@ import com.kryptoblocks.rewardx2019.AllVendorRewardsActivity;
 import com.kryptoblocks.rewardx2019.R;
 import com.kryptoblocks.rewardx2019.pojo.GetRegsiteredVendorsData;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
+import static com.kryptoblocks.rewardx2019.SignUpActivity.mypreferenceLogin;
 
 public class RegisteredVendorRewardsAdapter extends RecyclerView.Adapter<RegisteredVendorRewardsAdapter.MyViewHolder>{
 
     Context mContext;
-    List<GetRegsiteredVendorsData> rewardsPojoList;
+   public static List<GetRegsiteredVendorsData> rewardsPojoList;
     String reward_date;
     public static String vendor_reward_uuid,vendorRewards_name;
 
     public String converted_date;
+    public  String registeredMerchantId;
+    SharedPreferences sharedPreferencesRegisteredVendors;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView reward_merch_name, reward_date, membership_id;
         public LinearLayout layout_rewards;
         public ImageView reward_img;
         public CheckBox checkbox_profile_rewards;
+
 
 
         public MyViewHolder(View view) {
@@ -87,10 +96,23 @@ public class RegisteredVendorRewardsAdapter extends RecyclerView.Adapter<Registe
        final GetRegsiteredVendorsData list = rewardsPojoList.get(position);
 
         reward_date = list.getRegistrationDate();
-       dateConverter();
+       //dateConverter();
+        dateCon();
 
        // String merc = list.getReward_merchant_name();
-
+        /*registeredMerchantId = list.getOwnerUuid();
+        System.out.println("Value of vendor registeredMerchantId uuid-----------"+registeredMerchantId);
+        try {
+            SharedPreferences.Editor registerd_vendor_id_editor = mContext.getSharedPreferences(mypreferenceLogin, MODE_PRIVATE).edit();
+            registerd_vendor_id_editor.putString("registeredMerchantIdKey", registeredMerchantId);
+            registerd_vendor_id_editor.commit();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+*/
+        //System.out.println("Value of vendor registeredMerchantId uuid-----------"+registeredMerchantId);
         holder.reward_merch_name.setText(String.valueOf(list.getOwnerName()));
         holder.membership_id.setText(list.getMembershipUuid());
         holder.reward_date.setText(converted_date);
@@ -182,6 +204,18 @@ public class RegisteredVendorRewardsAdapter extends RecyclerView.Adapter<Registe
         } catch (ParseException ex) {
             Log.v("Exception", ex.getLocalizedMessage());
         }
+    }
+    void dateCon()
+    {
+        DateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
+
+        long milliSeconds= Long.parseLong(reward_date);
+        System.out.println(milliSeconds);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(milliSeconds);
+        converted_date = formatter.format(calendar.getTime());
+        System.out.println("Date----"+converted_date);
     }
 
 

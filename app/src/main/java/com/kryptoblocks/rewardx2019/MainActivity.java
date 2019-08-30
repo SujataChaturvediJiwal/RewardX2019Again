@@ -1,6 +1,8 @@
 package com.kryptoblocks.rewardx2019;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -21,6 +23,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -125,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     TextView nav_user_name;
     ImageView nav_user_image;
     String user_name_nav;
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -239,12 +243,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         sharedPreferencesLocation = getSharedPreferences(mypreferenceMain, Context.MODE_PRIVATE);
 
-        if (ContextCompat.checkSelfPermission(getApplication(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplication(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        /*if (ContextCompat.checkSelfPermission(getApplication(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplication(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
 
-        }
-        getLocation();
+        }*/
+
+        //getLocation();
+        checkLocationPermission();
 
         //retrieving data of shared preferences
         String lat = sharedPreferencesLocation.getString("shared_lati","hi");
@@ -368,41 +374,84 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    public boolean checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                new AlertDialog.Builder(this)
+                        .setTitle("Alert")
+                        .setMessage("give permission")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Prompt the user once explanation has been shown
+                                ActivityCompat.requestPermissions(MainActivity.this,
+                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                        MY_PERMISSIONS_REQUEST_LOCATION);
+                            }
+                        })
+                        .create()
+                        .show();
+
+                getLocation();
+
+
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+               // getLocation();
+            }
+            return false;
+        } else {
+            return true;
+        }
+    }
     protected void getLocation() {
+        //checkLocationPermission();
         if (isLocationEnabled(MainActivity.this)) {
             locationManager = (LocationManager)  this.getSystemService(Context.LOCATION_SERVICE);
             criteria = new Criteria();
             bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true)).toString();
 
             //You can still do this if you like, you might get lucky:
-            if (ContextCompat.checkSelfPermission(getApplication(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplication(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(getApplication(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(getApplication(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
                 ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
 
-            }
 
-            Location location = locationManager.getLastKnownLocation(bestProvider);
+                Location location = locationManager.getLastKnownLocation(bestProvider);
 
-            if (location != null) {
-                Log.e("TAG", "GPS is on");
-                latitude = String.valueOf(location.getLatitude());
-                longitude = String.valueOf(location.getLongitude());
+                if (location != null) {
+                    Log.e("TAG", "GPS is on");
+                    latitude = String.valueOf(location.getLatitude());
+                    longitude = String.valueOf(location.getLongitude());
 
-                //using sharedPreferences
-                SharedPreferences.Editor editor = sharedPreferencesLocation.edit();
-                editor.putString("shared_lati", latitude);
-                editor.putString("shared_longi", longitude);
-                editor.commit();
+                    //using sharedPreferences
+                    SharedPreferences.Editor editor = sharedPreferencesLocation.edit();
+                    editor.putString("shared_lati", latitude);
+                    editor.putString("shared_longi", longitude);
+                    editor.commit();
 
-                System.out.println("Clicked-----");
-                //tv_value.setText("Latitude:" + location.getLatitude() + ", Longitude:" + location.getLongitude());
-                System.out.print("Location-------------" +latitude+ " " + longitude);
-               // Toast.makeText(MainActivity.this, "latitude:" + latitude + " longitude:" + longitude, Toast.LENGTH_SHORT).show();
-                // searchNearestPlace(voice2text);
-            }
-            else{
-                //This is what you need:
-                locationManager.requestLocationUpdates(bestProvider, 1000, 0, this);
+                    System.out.println("Clicked-----");
+                    //tv_value.setText("Latitude:" + location.getLatitude() + ", Longitude:" + location.getLongitude());
+                    System.out.print("Location-------------" + latitude + " " + longitude);
+                    // Toast.makeText(MainActivity.this, "latitude:" + latitude + " longitude:" + longitude, Toast.LENGTH_SHORT).show();
+                    // searchNearestPlace(voice2text);
+                } else {
+                    //This is what you need:
+                    locationManager.requestLocationUpdates(bestProvider, 1000, 0, this);
+                }
             }
         }
         else

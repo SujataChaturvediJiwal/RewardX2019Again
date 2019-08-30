@@ -13,8 +13,10 @@ import com.kryptoblocks.rewardx2019.R;
 import com.kryptoblocks.rewardx2019.pojo.ActivitiesPojo;
 import com.kryptoblocks.rewardx2019.pojo.GetRecentActivitiesData;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -60,7 +62,7 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<ActivitiesAdapter.My
 //       GetRecentActivitiesData ss = pojoListAct.get(position);
 
         if(list.getRedeemPoints()!=null) {
-            activities_date = String.valueOf(list.getRedeemDateTime());
+            activities_date = String.valueOf(list.getDateTimeAllocated());
             dateConverter();
             holder.number_tokens.setText(String.valueOf(list.getRedeemPoints()));
             //holder.number_tokens.setText(String.valueOf(list.getRedeemPoints()));
@@ -71,7 +73,7 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<ActivitiesAdapter.My
         }
         else if(list.getRewardPoints()!=null)
         {
-            activities_date = String.valueOf(list.getRedeemDateTime());
+            activities_date = String.valueOf(list.getDateTimeAllocated());
             dateConverter();
             holder.number_tokens.setText(String.valueOf(list.getRewardPoints()));
             //holder.number_tokens.setText(String.valueOf(list.getRedeemPoints()));
@@ -92,18 +94,31 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<ActivitiesAdapter.My
 
 
     void dateConverter() {
-       // Toast.makeText(mContext, "date function called", Toast.LENGTH_SHORT).show();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+            DateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
+
+            long milliSeconds= Long.parseLong(activities_date);
+            System.out.println(milliSeconds);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(milliSeconds);
+            activities_converted_date = formatter.format(calendar.getTime());
+            System.out.println("Date----"+activities_converted_date);
+        }
+
+
+   /* void dateConverter() {
+        // Toast.makeText(mContext, "date function called", Toast.LENGTH_SHORT).show();
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
         try {
             Date d = sdf.parse(activities_date);
-           // Toast.makeText(mContext, "date-========="+d, Toast.LENGTH_SHORT).show();
+            // Toast.makeText(mContext, "date-========="+d, Toast.LENGTH_SHORT).show();
             sdf = new SimpleDateFormat("dd MMM yyyy");
-            activities_converted_date = sdf.format(d);
-            System.out.println("date-----"+sdf.format(d));
+            Integer timeInMilliseconds = d.getDate();
+            System.out.println("date-----"+timeInMilliseconds);
         } catch (ParseException ex) {
             Log.v("Exception", ex.getLocalizedMessage());
         }
-    }
+    }*/
 
 
 }

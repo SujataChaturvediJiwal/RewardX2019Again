@@ -6,6 +6,9 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,14 +23,21 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.kryptoblocks.rewardx2019.DiscoverDescriptionActivity;
 import com.kryptoblocks.rewardx2019.R;
+import com.kryptoblocks.rewardx2019.SignUpActivity;
 import com.kryptoblocks.rewardx2019.apiInterfaces.ApiInterface;
 import com.kryptoblocks.rewardx2019.network.ApiClient;
 import com.kryptoblocks.rewardx2019.pojo.DiscoverData;
 import com.kryptoblocks.rewardx2019.pojo.GetAllVendors;
+import com.kryptoblocks.rewardx2019.pojo.GetRegisteredVendors;
 import com.kryptoblocks.rewardx2019.pojo.IsCustomerRegistered;
 import com.kryptoblocks.rewardx2019.pojo.RegisterToRewardsProgramInput;
 import com.kryptoblocks.rewardx2019.pojo.RegisterToRewardsProgramOutput;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -35,6 +45,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
+
+import static android.content.Context.MODE_PRIVATE;
+import static com.kryptoblocks.rewardx2019.adapter.RegisteredVendorRewardsAdapter.rewardsPojoList;
 import static com.kryptoblocks.rewardx2019.fragments.RedeemFragment.mypreferenceLogin;
 //import static com.kryptoblocks.rewardx2019.SocialLoginActivity.user_uuid;
 
@@ -51,11 +64,15 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.MyView
     public String user_id_profile_discover_adapter;
     DiscoverAdapter.MyViewHolder holder;
     public String v_uuid;
-    public static String points, img, vendor_name,offer_name;
+    public static String points, img, vendor_name,offer_name, summary, end_time_reward_date;
     String vendor_id_discover;
     public static String vendor_name_discover;
     SharedPreferences sharedPreferencesDiscover;
     String name;
+    public static Integer flagRegistered =0;
+    List<GetRegisteredVendors> rewardsPojos;
+    RegisteredVendorRewardsAdapter rewardsAdapter;
+    String registeredMerchantId, end_date;
 
     String id = "1fvzg1xwjvcmp41m";
 
@@ -116,6 +133,7 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.MyView
 
             System.out.println("userId======" + user_id_profile_discover_adapter);
 
+            holder.discover_company_name.setText(list.getOwnerName());
             holder.discover_offer_name.setText(list.getName());
             holder.discover_offer_token_value.setText(String.valueOf(list.getTotalPoints()));
             // holder.discover_company_name.setText(String.valueOf(list.getN()));
@@ -126,15 +144,19 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.MyView
             editor.putString("vendor_id", vendor_uuid);
             editor.commit();
             System.out.println("vendor uuid-----" + position + "------" + vendor_uuid);
+            end_date = list.getEndTime();
+            dateConverter();
+
 
             fetchVendorNamesDiscover();
+            displayRegisteredVendor();
 
+            compareDates();
 
-            sharedPreferencesDiscover = mContext.getSharedPreferences(mypreferenceLogin, Context.MODE_PRIVATE);
-            //retrieving data of shared preferences
+            /*sharedPreferencesDiscover = mContext.getSharedPreferences(mypreferenceLogin, Context.MODE_PRIVATE);
             name = sharedPreferencesDiscover.getString("vendor_discover_name","hi");
+            holder.discover_company_name.setText(name);*/
 
-            holder.discover_company_name.setText(name);
            // holder.discover_company_name.setText(vendor_name_discover);
             System.out.println("vendor name inside-----" + position + "------" + vendor_name_discover);
            // Toast.makeText(mContext, "vendor name discover-----"+vendor_name_discover, Toast.LENGTH_LONG).show();
@@ -150,8 +172,23 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.MyView
 
 
 
-                   // fetchVendorNamesDiscover();
+                    sharedPreferencesDiscoverAdapter = mContext.getSharedPreferences(mypreferenceLogin, Context.MODE_PRIVATE);
+                    //retrieving data of shared preferences
+                    String merch_id_registered = sharedPreferencesDiscoverAdapter.getString("registeredMerchantIdKey","hi");
 
+                   // fetchVendorNamesDiscover();
+                    System.out.println("registeredMerchantId in adapter-----" + position + "------" + merch_id_registered);
+                    System.out.println("MerchantId in adapter-----" + position + "------" + list.getVendorUuid());
+                    System.out.println("flagRegistered in adapter outside-----" + position + "------" + flagRegistered);
+                    if(merch_id_registered.equals(list.getVendorUuid()))
+                    {
+                        flagRegistered = 1;
+                        System.out.println("flagRegistered in adapter-----" + position + "------" + flagRegistered);
+                    }
+                    else
+                    {
+                        flagRegistered = 0;
+                    }
                     SharedPreferences.Editor vendor_name = sharedPreferencesDiscoverAdapter.edit();
                     vendor_name.putString("vendor_discover_name", vendor_name_discover);
                     vendor_name.commit();
@@ -160,6 +197,7 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.MyView
                     img = list.getImageLink();
                     //vendor_name
                     offer_name = list.getName();
+                    summary = list.getSummary();
 
                     Intent i = new Intent(mContext, DiscoverDescriptionActivity.class);
                     mContext.startActivity(i);
@@ -234,6 +272,85 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.MyView
             public void onFailure(Call<GetAllVendors> call, Throwable t) {
                 Log.e(TAG, "Unable to submit post to register API.");
                 //Toast.makeText(mContext, "Failed+++++++++", Toast.LENGTH_LONG).show();
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void displayRegisteredVendor() {
+
+
+        apiInterface =  ApiClient.getInstance().getClient().create(ApiInterface.class);
+        // apiInterface = ApiClient.getRetrofit().create(ApiInterface.class);
+
+
+        sharedPreferencesDiscover = mContext.getSharedPreferences(mypreferenceLogin, Context.MODE_PRIVATE);
+        //retrieving data of shared preferences
+       String user_id_ = sharedPreferencesDiscover.getString("user_unique_id","hi");
+
+        Call<GetRegisteredVendors> call1 = apiInterface.getRegisteredCustomers(user_id_);
+
+        System.out.println("callll====="+call1);
+
+        call1.enqueue(new Callback<GetRegisteredVendors>() {
+
+
+            @Override
+            public void onResponse(Call<GetRegisteredVendors> call, Response<GetRegisteredVendors> response) {
+
+                if(response.code()== 200) {
+                    // if (passwordRegister == rePassword_register.getText().toString()) {
+                    int statusCode = response.code();
+
+                    System.out.println("Code" + statusCode);
+
+                    System.out.println("body" + response.body().getData());
+
+
+                    rewardsPojos = new ArrayList<>();
+                    rewardsAdapter = new RegisteredVendorRewardsAdapter(mContext, response.body().getData());
+                    RecyclerView.LayoutManager subLayoutManager =
+                            new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+
+                    int size = rewardsPojoList.size();
+                    System.out.println("SIze----------" + size);
+
+                    for(int i = 0 ;i<size;i++) {
+                        registeredMerchantId = response.body().getData().get(i).getOwnerUuid();
+                        System.out.println("Value of vendor registeredMerchantId uuid-----------" + registeredMerchantId);
+                        try {
+                            SharedPreferences.Editor registerd_vendor_id_editor = mContext.getSharedPreferences(SignUpActivity.mypreferenceLogin, MODE_PRIVATE).edit();
+                            registerd_vendor_id_editor.putString("registeredMerchantIdKey", registeredMerchantId);
+                            registerd_vendor_id_editor.commit();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                   /* recyle_rewards.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
+                    recyle_rewards.setLayoutManager(subLayoutManager);
+
+                    recyle_rewards.setItemAnimator(new DefaultItemAnimator());
+                    recyle_rewards.setAdapter(rewardsAdapter);*/
+
+                    Log.i(TAG, "  success to API." + response);
+                    //Toast.makeText(getContext(), "Success register+++++++++", Toast.LENGTH_LONG).show();
+
+                }
+
+                else
+                {
+                    Log.i(TAG, "post not submitted to API." + response);
+                    //Toast.makeText(getContext(), "Unsuccess register+++++++++", Toast.LENGTH_LONG).show();
+                }
+            }
+
+
+
+            @Override
+            public void onFailure(Call<GetRegisteredVendors> call, Throwable t) {
+                Log.e(TAG, "Unable to submit post to register API.");
+                //Toast.makeText(getContext(), "Failed+++++++++", Toast.LENGTH_LONG).show();
                 t.printStackTrace();
             }
         });
@@ -423,6 +540,42 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.MyView
         });
          return false;
      }
+
+    void dateConverter() {
+        DateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
+
+        long milliSeconds= Long.parseLong(end_date);
+        System.out.println(milliSeconds);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(milliSeconds);
+        end_time_reward_date = formatter.format(calendar.getTime());
+        System.out.println("Date----"+end_time_reward_date);
+    }
+
+    void compareDates()
+    {
+        //current date
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        String date = new SimpleDateFormat("dd MMM yyyy").format(new Date());
+        System.out.println("Current date-------"+date);
+
+        try {
+            //comparing
+            if (!sdf.parse(date).after(sdf.parse(end_time_reward_date))) {
+                Toast.makeText(mContext, "true", Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                Toast.makeText(mContext, "False", Toast.LENGTH_SHORT).show();
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
 
 }

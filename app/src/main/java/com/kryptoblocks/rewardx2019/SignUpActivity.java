@@ -35,6 +35,7 @@ public class SignUpActivity extends AppCompatActivity {
            password_register_textInputLayout, rePassword_register_textInputLayout;
     public EditText userName_register, emailId_register, password_register, rePassword_register, phone_number_register;
    static String passwordRegister, emailIdRegister;
+    Boolean check_regsiter = true;
 
     public static final String mypreferenceLogin = "mypref";
     SharedPreferences sharedPreferencesSignUp;
@@ -77,17 +78,10 @@ public class SignUpActivity extends AppCompatActivity {
                 //Toast.makeText(SignUpActivity.this, "Hi 2", Toast.LENGTH_SHORT).show();
                 Log.i(TAG, "Hi 2------------" );
 
-                if(validateEmailId() && validateUserName()&& validatingPasswordEmpty() && validatePhoneNumber())
-        {
-            validatingPassword();
-
-           // Toast.makeText(SignUpActivity.this, "Hi 3", Toast.LENGTH_SHORT).show();
-            Log.i(TAG, "Hi 3------------" );
-
-            CustomerRegistration();
-
-        }
-        else
+                if(validateUserName() ) {
+                                    CustomerRegistration();
+                                }
+                                else
         {
             //Toast.makeText(SignUpActivity.this, "Stay here", Toast.LENGTH_SHORT).show();
         }
@@ -193,21 +187,21 @@ public class SignUpActivity extends AppCompatActivity {
 }
         private Boolean validatingPassword() {
 
-             String user_name = userName_register.getText().toString();
-             String emailId = emailId_register.getText().toString();
-             String password = password_register.getText().toString();
+        String password = password_register.getText().toString();
              String re_password = rePassword_register.getText().toString();
-             String phone_number = phone_number_register.getText().toString();
+
+
 
              if (password.equals(re_password)) {
 
                         /*Intent i = new Intent(getApplication(), ProfileActivity.class);
                         startActivity(i);*/
-                        return true;
+                        return check_regsiter;
 
                     }
                         else
                     {
+                        password_register_textInputLayout.setError(getString(R.string.err_msg_password_match));
                         rePassword_register_textInputLayout.setError(getString(R.string.err_msg_password_match));
                        // password_register_textInputLayout.setError(getString(R.string.err_msg_password_empty));
                          password_register.getText().clear();
@@ -215,8 +209,9 @@ public class SignUpActivity extends AppCompatActivity {
                           password_register.requestFocus();
 
                         //Toast.makeText(SignUpActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
-                        return true;
-                    }
+                         check_regsiter = false;
+                         }
+            return check_regsiter;
                    }
 
     private Boolean validatingPasswordEmpty() {
@@ -226,60 +221,107 @@ public class SignUpActivity extends AppCompatActivity {
 
         if(android.text.TextUtils.isEmpty(password))
         {
-            Toast.makeText(SignUpActivity.this, "Empty password filed is not allowed", Toast.LENGTH_SHORT).show();
-            rePassword_register_textInputLayout.setError(getString(R.string.err_msg_password_empty));
-            rePassword_register_textInputLayout.requestFocus();
-            return false;
+            //Toast.makeText(SignUpActivity.this, "Empty password filed is not allowed", Toast.LENGTH_SHORT).show();
+            password_register_textInputLayout.setError(getString(R.string.err_msg_password_empty));
+            password_register_textInputLayout.requestFocus();
+            check_regsiter = false;
         }
-        else if(android.text.TextUtils.isEmpty(re_password))
+         if(android.text.TextUtils.isEmpty(re_password))
         {
             rePassword_register_textInputLayout.setError(getString(R.string.err_msg_password_empty));
             rePassword_register_textInputLayout.requestFocus();
-            return false;
+            check_regsiter = false;
         }
 
-        else
-        {
-          //  rePassword_register_textInputLayout.setError(getString(R.string.err_msg_password_match));
+        //  rePassword_register_textInputLayout.setError(getString(R.string.err_msg_password_match));
            // password_register_textInputLayout.setError(getString(R.string.err_msg_password_empty));
             //password_register.getText().clear();
            // rePassword_register.setText("");
             //password_register.requestFocus();
 
            // Toast.makeText(SignUpActivity.this, "done", Toast.LENGTH_SHORT).show();
-            return true;
-        }
+            return check_regsiter;
+
     }
 
        private Boolean validateUserName()
        {
-             String user_name = userName_register.getText().toString();
+           String user_name = userName_register.getText().toString();
+           String emailId = emailId_register.getText().toString();
+           String phone_number = phone_number_register.getText().toString();
+           String password = password_register.getText().toString();
+           String re_password = rePassword_register.getText().toString();
              if(android.text.TextUtils.isEmpty(user_name))
                  {
                         userName_register_textInputLayout.setError(getString(R.string.err_msg_username));
                         userName_register.requestFocus();
-                        return false;
+                        check_regsiter = false;
                  }
-                else
+           if(android.text.TextUtils.isEmpty(emailId))
+           {
+               emailId_register_textInputLayout.setError(getString(R.string.err_msg_emailId));
+               emailId_register_textInputLayout.requestFocus();
+               check_regsiter = false;
+           }
+           if(android.text.TextUtils.isEmpty(phone_number))
+           {
+               phoneNumber_register_textInputLayout.setError("Phone number cannot be empty");
+               phoneNumber_register_textInputLayout.requestFocus();
+               check_regsiter = false;
+           }
+           if(android.text.TextUtils.isEmpty(password))
+           {
+               //Toast.makeText(SignUpActivity.this, "Empty password filed is not allowed", Toast.LENGTH_SHORT).show();
+               password_register_textInputLayout.setError(getString(R.string.err_msg_password_empty));
+               password_register_textInputLayout.requestFocus();
+               check_regsiter = false;
+           }
+           if(android.text.TextUtils.isEmpty(re_password))
+           {
+               rePassword_register_textInputLayout.setError(getString(R.string.err_msg_password_empty));
+               rePassword_register_textInputLayout.requestFocus();
+               check_regsiter = false;
+           }
+           if (password.equals(re_password)) {
+
+                        /*Intent i = new Intent(getApplication(), ProfileActivity.class);
+                        startActivity(i);*/
+               return check_regsiter;
+
+           }
+           else
+           {
+               password_register_textInputLayout.setError(getString(R.string.err_msg_password_match));
+               rePassword_register_textInputLayout.setError(getString(R.string.err_msg_password_match));
+               // password_register_textInputLayout.setError(getString(R.string.err_msg_password_empty));
+               password_register.getText().clear();
+               rePassword_register.setText("");
+               password_register.requestFocus();
+
+               //Toast.makeText(SignUpActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+               check_regsiter = false;
+           }
+
+                /*else
                     {
                          userName_register_textInputLayout.setErrorEnabled(false);
-                         }
-                         return true;
+                         }*/
+                         return check_regsiter;
                    }
     private Boolean validatePhoneNumber()
     {
         String phone_number = phone_number_register.getText().toString();
         if(android.text.TextUtils.isEmpty(phone_number))
         {
-            phoneNumber_register_textInputLayout.setError(getString(R.string.err_msg_username));
+            phoneNumber_register_textInputLayout.setError("Phone number cannot be empty");
             phoneNumber_register_textInputLayout.requestFocus();
-            return false;
+            check_regsiter = false;
         }
-        else
+       /* else
         {
             phoneNumber_register_textInputLayout.setErrorEnabled(false);
-        }
-        return true;
+        }*/
+        return check_regsiter;
     }
 
         private Boolean validateEmailId()
@@ -289,12 +331,13 @@ public class SignUpActivity extends AppCompatActivity {
                  {
                         emailId_register_textInputLayout.setError(getString(R.string.err_msg_emailId));
                      emailId_register_textInputLayout.requestFocus();
-                        return false;
+                     check_regsiter = false;
                  }
-                else {
+                /*else {
                  emailId_register_textInputLayout.setErrorEnabled(false);
-                 return true;
-             }
+                 return check_regsiter;
+             }*/
+             return check_regsiter;
                    }
 
 }

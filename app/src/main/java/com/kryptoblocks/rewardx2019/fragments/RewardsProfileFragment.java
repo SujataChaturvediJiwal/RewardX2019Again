@@ -49,7 +49,7 @@ public class RewardsProfileFragment extends Fragment {
     ApiInterface apiInterface;
 
     public static final String mypreferenceLogin = "mypref";
-    SharedPreferences sharedPreferencesRewardsProfile;
+    public SharedPreferences sharedPreferencesRewardsProfile;
     String user_id_rewardsProfile;
 
     public RewardsProfileFragment() {

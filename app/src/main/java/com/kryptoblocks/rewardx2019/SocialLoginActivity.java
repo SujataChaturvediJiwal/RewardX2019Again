@@ -10,8 +10,10 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -41,6 +43,10 @@ import com.kryptoblocks.rewardx2019.pojo.LoginCustomerOutput;
 import com.kryptoblocks.rewardx2019.pojo.RegisterCustomerInput;
 import com.kryptoblocks.rewardx2019.pojo.RegisterCustomerOutput;
 
+import org.json.JSONObject;
+
+import java.nio.charset.Charset;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -52,7 +58,7 @@ import static com.kryptoblocks.rewardx2019.SignUpActivity.passwordRegister;
 public class SocialLoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
     ApiInterface apiInterface;
-    TextView text_sign_up_now;
+    TextView text_sign_up_now, errorMessage_tv;
     TextInputLayout emailId_TextInputlayout, password_TextInputlayout;
     RadioButton radio_email, radio_phoneNumber;
      EditText  emailId_editT,password_editT;
@@ -86,6 +92,7 @@ protected void onCreate(Bundle savedInstanceState) {
         emailId_editT = findViewById(R.id.editText_emailId_login);
         password_editT= findViewById(R.id.editText_password_login);
         login = findViewById(R.id.login_button);
+        errorMessage_tv = findViewById(R.id.textView_errorMessage);
 
         radio_email = findViewById(R.id.radio_button_chooseEmail);
         radio_phoneNumber = findViewById(R.id.radio_button_choosePhoneNumber);
@@ -99,13 +106,23 @@ protected void onCreate(Bundle savedInstanceState) {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
                 if(checkedId == R.id.radio_button_choosePhoneNumber) {
+                    emailId_editT.getText().clear();
+                    password_editT.getText().clear();
                     emailId_TextInputlayout.setHint("Phone Number");
+                    emailId_TextInputlayout.setError(" ");
+                    password_TextInputlayout.setError(" ");
+                    emailId_editT.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
                     flag = 0;
                     System.out.println("ph num:"+flag);
                 }
                 else if(checkedId == R.id.radio_button_chooseEmail)
                 {
+                    emailId_editT.getText().clear();
+                    password_editT.getText().clear();
                     emailId_TextInputlayout.setHint("Email Id");
+                    emailId_TextInputlayout.setError(" ");
+                    password_TextInputlayout.setError(" ");
+                    emailId_editT.setInputType(InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS);
                     flag = 1;
                     System.out.println("email:"+flag);
                 }
@@ -146,13 +163,63 @@ protected void onCreate(Bundle savedInstanceState) {
                 if(flag == 1) {
                     System.out.println("login by email");
                     login_type = "1";
-                    loginCustomerByEmail();
+                    if(validatingEmailPasswordEmpty()) {
+                        loginCustomerByEmail();
+                    }
+                    else
+                    {
+                        emailId_editT.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                               // emailId_TextInputlayout.setError(" ");
+                                if (TextUtils.isEmpty(charSequence)) {
+                                    emailId_TextInputlayout.setError(getString(R.string.err_msg_emailId));
+                                }
+
+                            }
+
+                            @Override
+                            public void afterTextChanged(Editable editable) {
+
+                            }
+                        });
+
+                        password_editT.addTextChangedListener(new TextWatcher() {
+                            @Override
+                            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                            }
+
+                            @Override
+                            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                if (TextUtils.isEmpty(charSequence)) {
+                                    password_TextInputlayout.setError(getString(R.string.err_msg_password_empty));
+                                }
+                                }
+
+                            @Override
+                            public void afterTextChanged(Editable editable) {
+
+                            }
+                        });
+                    }
                 }
                 else if(flag == 0)
                 {
                     System.out.println("login by ph num");
                     login_type ="2";
-                    loginCustomerByEmail();
+                    if(validatingEmailPasswordEmpty()) {
+                        loginCustomerByEmail();
+                    }
+                    else
+                    {
+
+                    }
                 }
             }
         });
@@ -182,7 +249,42 @@ protected void onCreate(Bundle savedInstanceState) {
 
         // getLocation();
 
+        emailId_editT.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                errorMessage_tv.setVisibility(View.GONE);
+                emailId_TextInputlayout.setError(" ");
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        password_editT.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                errorMessage_tv.setVisibility(View.GONE);
+                password_TextInputlayout.setError(" ");
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
 
@@ -395,7 +497,7 @@ protected void onCreate(Bundle savedInstanceState) {
 
                         Intent i = new Intent(getApplication(), MainActivity.class);
                         startActivity(i);
-
+                       // finish();
                         //checking user logged in or not
 
 
@@ -410,15 +512,20 @@ protected void onCreate(Bundle savedInstanceState) {
 
                     else {
                         try {
-                            String errorBodyMessage = response.errorBody().source().toString();
-                            System.out.println("error msg----------" + errorBodyMessage);
+                           // String errorBodyMessage = response.errorBody().source().toString();
+                            String errorBodyMessage = response.errorBody().string();
+                            System.out.println("error msg----------1" + errorBodyMessage);
                             if (!TextUtils.isEmpty(errorBodyMessage)) {
-                                Gson gson = new Gson();
-                                GeneralError genericErrorPojo = gson.fromJson(errorBodyMessage, GeneralError.class);
 
-                                String errorMsg = genericErrorPojo.getError();
-                                System.out.println("error msg----------" + errorMsg);
-                                emailId_TextInputlayout.setError(errorMsg);
+                             // String str =  response.errorBody().source().readString(Charset.forName(errorBodyMessage));
+                                Gson gson = new Gson();
+                                GenericErrorPojo genericErrorPojo = gson.fromJson(errorBodyMessage, GenericErrorPojo.class);
+
+                                String errorMsg = genericErrorPojo.getGeneralError().getError();
+
+                                System.out.println("error msg----------2" + errorMsg);
+                                errorMessage_tv.setVisibility(View.VISIBLE);
+                                errorMessage_tv.setText(errorMsg);
 
                             }
                         /*System.out.println("data----------+response.body().getData().getError()");
@@ -447,6 +554,32 @@ protected void onCreate(Bundle savedInstanceState) {
             }
         });
     }
+
+    private Boolean validatingEmailPasswordEmpty() {
+
+        String user_id = emailId_editT.getText().toString();
+        String user_password = password_editT.getText().toString();
+        Boolean check = true;
+
+        if(android.text.TextUtils.isEmpty(user_id))
+        {
+            //Toast.makeText(SocialLoginActivity.this, "Empty password filed is not allowed", Toast.LENGTH_SHORT).show();
+            emailId_TextInputlayout.setError(getString(R.string.err_msg_emailId));
+            emailId_TextInputlayout.requestFocus();
+            check = false;
+        }
+          if(android.text.TextUtils.isEmpty(user_password))
+        {
+            password_TextInputlayout.setError(getString(R.string.err_msg_password_empty));
+            password_TextInputlayout.requestFocus();
+           check = false ;
+        }
+
+        return check;
+
+    }
+
+
 }
 
 

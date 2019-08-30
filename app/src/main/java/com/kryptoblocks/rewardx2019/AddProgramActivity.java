@@ -28,12 +28,14 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.kryptoblocks.rewardx2019.adapter.NewAdapter;
 import com.kryptoblocks.rewardx2019.adapter.RegisteredVendorRewardsAdapter;
 //import com.kryptoblocks.rewardx2019.adapter.VendorNamesListAdapter;
 import com.kryptoblocks.rewardx2019.apiInterfaces.ApiInterface;
 import com.kryptoblocks.rewardx2019.fragments.ProfileFragment;
 import com.kryptoblocks.rewardx2019.network.ApiClient;
+import com.kryptoblocks.rewardx2019.pojo.GenericErrorPojo;
 import com.kryptoblocks.rewardx2019.pojo.GetAllVendors;
 import com.kryptoblocks.rewardx2019.pojo.GetAllVendorsData;
 import com.kryptoblocks.rewardx2019.pojo.GetRegisteredVendors;
@@ -128,14 +130,18 @@ public class AddProgramActivity extends AppCompatActivity {
 
                    System.out.println("flag join value else if in profile-----"+join_var_flag);
                    System.out.println("Vendor business id -aga inside if------------"+local_vendor_id_var);
-                   isCustomerMembershipValid();
+                   if(validatingMemberIdEmpty()) {
+                       isCustomerMembershipValid();
+                   }
                }
                else if(join_var_flag ==0)
                {
 
                    System.out.println("flag join value else if in profile-----"+join_var_flag);
                    System.out.println("Vendor business id -aga inside if------------"+local_vendor_id_var);
-                   isCustomerMembershipValid();
+                   if(validatingMemberIdEmpty()) {
+                       isCustomerMembershipValid();
+                   }
                }
                // registerToRewardsProgram();
 
@@ -264,20 +270,41 @@ public class AddProgramActivity extends AppCompatActivity {
 
                 }
 
-                else if((response.code() == 200) && (response.body().getData().getError()!=null))
+               /* else if((response.code() == 200) && (response.body().getData().getError()!=null))
                 {
                     vendor_membership_numbers.setError("Invalid id");
                     vendor_membership_numbers.requestFocus();
                     Log.i(TAG, "already registered with this membership id----" + response);
 
-                }
+                }*/
                 else if(response.code() == 500)
                 {
-                   // System.out.println("body" + response.body().getMessage());
-                    vendor_membership_numbers.setError("Wrong id");
-                    vendor_membership_numbers.requestFocus();
-                    vendor_membership_numbers.setText("");
-                    //vendor_membership_numbers.onTouchEvent(vendor_membership_numbers.setText(""));
+                    try {
+
+                        String errorBodyMessage = response.errorBody().string();
+                        System.out.println("error msg----------1" + errorBodyMessage);
+                        if (!TextUtils.isEmpty(errorBodyMessage)) {
+
+                            // String str =  response.errorBody().source().readString(Charset.forName(errorBodyMessage));
+                            Gson gson = new Gson();
+                            GenericErrorPojo genericErrorPojo = gson.fromJson(errorBodyMessage, GenericErrorPojo.class);
+
+                            String errorMsg = genericErrorPojo.getGeneralError().getError();
+
+                            System.out.println("error msg----------2" + errorMsg);
+
+
+                            // System.out.println("body" + response.body().getMessage());
+                            vendor_membership_numbers.setError(errorMsg);
+                            vendor_membership_numbers.requestFocus();
+                            vendor_membership_numbers.setText("");
+                            //vendor_membership_numbers.onTouchEvent(vendor_membership_numbers.setText(""));
+                        }
+                    }
+                    catch(Exception e)
+                        {
+                            System.out.println("Exception---"+e);
+                        }
                 }
                 else
                 {
@@ -434,7 +461,7 @@ public class AddProgramActivity extends AppCompatActivity {
                             local_vendor_id_var = vendor_id;
                             business_vendor_name.setText(response.body().getData().get(position).getVendorName());
                             System.out.println("vendor id main-----------" + vendor_id);
-                            Toast.makeText(getApplication(), "clicked on item+++++++++", Toast.LENGTH_LONG).show();
+                           // Toast.makeText(getApplication(), "clicked on item+++++++++", Toast.LENGTH_LONG).show();
 
 
                         }
@@ -487,6 +514,43 @@ public class AddProgramActivity extends AppCompatActivity {
             System.out.println("value outside------------"+local_vendor_id_var);
             join_var_flag = 0;
             //isCustomerMembershipValid();
+        }
+    }
+
+    private Boolean validatingMemberIdEmpty() {
+
+        String membership_id = vendor_membership_numbers.getText().toString();
+        String business_vendor = business_vendor_name.getText().toString();
+        boolean var = true ;
+
+
+        if (android.text.TextUtils.isEmpty(membership_id)) {
+            //Toast.makeText(SocialLoginActivity.this, "Empty password filed is not allowed", Toast.LENGTH_SHORT).show();
+            vendor_membership_numbers.setError("Membership id can't be empty");
+            vendor_membership_numbers.requestFocus();
+            var = false;
+        }   if(android.text.TextUtils.isEmpty(business_vendor))
+        {
+            business_vendor_name.setError("Vendor name empty");
+            business_vendor_name.requestFocus();
+            var = false;
+        }
+        return var;
+
+    }
+        private Boolean validatingVendorNameEmpty() {
+
+        String business_vendor = business_vendor_name.getText().toString();
+          if(android.text.TextUtils.isEmpty(business_vendor))
+        {
+            business_vendor_name.setError("Vendor name empty");
+            business_vendor_name.requestFocus();
+            return false;
+        }
+
+        else
+        {
+            return true;
         }
     }
 
